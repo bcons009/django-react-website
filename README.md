@@ -11,10 +11,11 @@ Based off of the [tutorial series by Traversy Media](https://www.youtube.com/pla
 
 ## To run:
 1. (First time setup) In the root directory of the repo, run `pip3 install pipenv`
-2. Run `pipenv shell` to enter the virtual environment
-3. Run `cd leadmanager`
-4. Run `python manage.py runserver`
-5. On your web browser, access `http://localhost:8000/`. You should get a simple "Hello World" page.
+2. Run `npm run dev` to recompile files. You must run every time if you want your changes to appear on the localhost website when testing.
+3. Run `pipenv shell` to enter the virtual environment
+4. Run `cd leadmanager`
+5. Run `python manage.py runserver`
+6. On your web browser, access `http://localhost:8000/`. You should get a simple "Hello World" page.
 
 All of the "lead" and "leadmanager" naming was from the tutorial. Of course, we'll need to rename all those directories/files/variables, as well as any calls made to those. Files with directory/object calls that must be changed include...
 * `leadmanager/leadmanager/settings.py` (has the most calls to other directories)
