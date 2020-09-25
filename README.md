@@ -10,12 +10,14 @@ Based off of the [tutorial series by Traversy Media](https://www.youtube.com/pla
 * Visual Studio Code (at least that's what I used to run/edit all this)
 
 ## To run:
-1. (First time setup) In the root directory of the repo, run `pip3 install pipenv`
-2. Run `npm run dev` to recompile files. You must run every time if you want your changes to appear on the localhost website when testing.
+1. (First time setup) Install dependencies using `npm install`
+2. (First time setup) Run `pip3 install pipenv`
 3. Run `pipenv shell` to enter the virtual environment
-4. Run `cd leadmanager`
-5. Run `python manage.py runserver`
-6. On your web browser, access `http://localhost:8000/`. You should get a simple "Hello World" page.
+4. Run `npm run dev` to run webpack (from root). You must run this line every time if you want your changes to appear on the localhost website when testing.
+5. Change directories using `cd leadmanager`
+6. Run `python manage.py runserver`
+7. On your web browser, access `http://localhost:8000/`. You should get a simple "Hello World" page.
+8. To create a production build, run `npm run build`
 
 All of the "lead" and "leadmanager" naming was from the tutorial. Of course, we'll need to rename all those directories/files/variables, as well as any calls made to those. Files with directory/object calls that must be changed include...
 * `leadmanager/leadmanager/settings.py` (has the most calls to other directories)
