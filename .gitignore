@@ -1,3 +1,13 @@
+node_modules
+
+### Django ###
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+media
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
