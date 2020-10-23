@@ -90,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'leads_DB',
-        'HOST': 'mongodb+srv://Bryan:rx4kkp3tA0hDo9Nb@cluster0.dac33.mongodb.net/<dbname>?retryWrites=true&w=majority',
-        'USERNAME': 'Bryan',
-        'PASSWORD': 'rx4kkp3tA0hDo9Nb',
+        'HOST': 'mongodb+srv://Trevor:o3wK67hX6RaU6Os2@cluster0.dac33.mongodb.net/<dbname>?retryWrites=true&w=majority',
+        'USERNAME': 'Trevor',
+        'PASSWORD': 'o3wK67hX6RaU6Os2',
         'authMechanism': 'SCRAM-SHA-1',
     }
 }

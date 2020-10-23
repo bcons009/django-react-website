@@ -1,5 +1,9 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { register } from '../../actions/auth';
+import { messages } from '../../actions/messages';
+
 
 export class Register extends Component {
 	state = {
@@ -7,15 +11,31 @@ export class Register extends Component {
 		email: '',
 		password: '',
 		password2: ''
-	}
+	};
+
+	static propTypes = {
+		register: PropTypes.func.isRequired,
+		isAuthenticated: PropTypes.bool,
+	};
 
 	onSubmit = e => {
 		e.preventDefault();
-		console.log('submit');
+		const { username, email, password, password2 } = this.state;
+		if(password !== password2) {
+			this.props.createMessage({passwordNotMatch: 'Passwords do not match'});
+		}
+		else {
+			const newUser = {
+				username,
+				password,
+				email,
+			};
+			this.props.register(newUser);
+		}
 	}
 
 	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value })
+		this.setState({ [e.target.name]: e.target.value });
 	}
 
 
@@ -77,8 +97,8 @@ export class Register extends Component {
 		          </form>
 		        </div>
 		      </div>
-		)
+		);
 	}
 }
 
-export default Register
+export default Register;
