@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development ./sfl-food-website/frontend/src/index.js --output ./sfl-food-website/frontend/static/frontend/main.js",
-    "build": "webpack --mode production ./sfl-food-website/frontend/src/index.js --output ./sfl-food-website/frontend/static/frontend/main.js"
+    "build": "webpack --mode production ./sfl-food-website/frontend/src/index.js --output ./sfl-food-website/frontend/static/frontend/main.js",
+    "start": "react-scripts start"
   },
   "keywords": [],
   "author": "",
@@ -16,17 +17,39 @@
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "dotenv": "^8.2.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@reach/combobox": "^0.11.2",
+    "@urbica/react-map-gl": "^1.14.2",
     "axios": "^0.20.0",
+    "date-fns": "^2.16.1",
+    "mapbox-gl": "^1.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-maps": "^9.4.5",
+    "react-map-gl": "^5.2.9",
+    "react-mapbox-gl": "^4.8.6",
     "react-redux": "^7.2.1",
+    "react-sizeme": "^2.6.12",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "use-places-autocomplete": "^1.5.7"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
