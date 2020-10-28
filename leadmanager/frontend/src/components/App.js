@@ -14,7 +14,7 @@ import Register from './accounts/Register';
 class App extends Component {
     render() {
         return (
-        	//<Provider store={store}>
+        	<Provider store={ store }>
 		        <Router>
 		            <Fragment>
 		        		<Header />
@@ -24,9 +24,9 @@ class App extends Component {
 		            	</Switch>
 		            </Fragment>
 		        </Router> 
-	       // </Provider> 
+	       </Provider> 
         )
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'))
