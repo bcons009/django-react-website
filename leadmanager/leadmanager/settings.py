@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+APPEND_SLASH = False
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -41,7 +43,14 @@ INSTALLED_APPS = [
     'leads',
     'rest_framework',
     'frontend',
+    'knox',
+    'accounts',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',)
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,9 +93,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'leads_DB',
-        'HOST': 'mongodb+srv://Bryan:rx4kkp3tA0hDo9Nb@cluster0.dac33.mongodb.net/<dbname>?retryWrites=true&w=majority',
-        'USERNAME': 'Bryan',
-        'PASSWORD': 'rx4kkp3tA0hDo9Nb',
+        'HOST': 'mongodb+srv://Trevor:o3wK67hX6RaU6Os2@cluster0.dac33.mongodb.net/<dbname>?retryWrites=true&w=majority',
+        'USERNAME': 'Trevor',
+        'PASSWORD': 'o3wK67hX6RaU6Os2',
         'authMechanism': 'SCRAM-SHA-1',
     }
 }
