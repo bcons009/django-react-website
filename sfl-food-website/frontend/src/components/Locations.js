@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import { getLocations, deleteLocation } from '../actions/locations'
 import { getSchedules } from '../actions/schedules'
 
-// const [schedules, setSchedules] = useState(0);
-
 export class Locations extends Component {
 
     static propTypes = {
-        // Investigate this
         locations: PropTypes.array.isRequired
     }
 
@@ -81,5 +78,4 @@ const mapStateToProps = state => ({
     schedules: state.schedules.locations
 });
 
-// investigate this
 export default connect(mapStateToProps, { getLocations, deleteLocation, getSchedules })(Locations);
