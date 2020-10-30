@@ -1,6 +1,6 @@
-from locations.models import OrgLocation, OrgSchedule
+from locations.models import OrgLocation, OrgSchedule, OrgLocationLL
 from rest_framework import viewsets, permissions
-from .serializers import OrgLocationSerializer, OrgScheduleSerializer
+from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer
 
 # OrgLocation ViewSet
 class OrgLocationViewSet(viewsets.ModelViewSet):
@@ -17,3 +17,11 @@ class OrgScheduleViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = OrgScheduleSerializer
+
+# OrgLocationLL ViewSet
+class OrgLocationLLViewSet(viewsets.ModelViewSet):
+    queryset = OrgLocationLL.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = OrgLocationLLSerializer

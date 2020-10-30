@@ -1,37 +1,118 @@
-import React, { Component , useState, useRef, useEffect } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getLocations } from '../actions/locations'
-import MapGL from '@urbica/react-map-gl'
+import { getLocationsLL } from '../actions/locationsLL'
+import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
 
-function SRMap() {
-    const [viewport, setViewport] = useState({
-        latitude: 25.761681,
-        longitude: -80.191788,
-        zoom: 10
-    });
+export class SearchResultsMap extends Component {
 
-    return (
-        <MapGL 
-            {...viewport}
-            accessToken={"pk.eyJ1IjoiYmNvbnMwMDkiLCJhIjoiY2tnbGJnbjhuMHBzbTJ6cXAwdjgwNTNsYyJ9.y5i5-ayp_o_o_9YrC5QQMg"}
-            mapStyle="mapbox://styles/bcons009/ckglkhmek02vv1awygco6zo83"
-            onViewportChange={viewport => {
-                setViewport(viewport);
-            }}
-            style={{ width: '75vw', height: '100vh' }}
-        >
-            markers here
-        </MapGL>
-    )
-}
+    constructor(props) {
+        super(props)
+        this.state = { 
+            locationSelected: false,
+            viewport: {
+                latitude: 26.122438,
+                longitude: -80.137314,
+                zoom: 8.8
+            }
+        }
+    }
 
-export default class SearchResultsMap extends Component {
+    selectedLocation = {
+        name: "",
+        address: "",
+        description: "",
+        website: "",
+        email: "",
+        phone_number: ""
+    };
+
+    static propTypes = {
+        locationsLL: PropTypes.array.isRequired
+    }
+
+    componentDidMount() {
+        this.props.getLocationsLL();
+    }
+
     render() {
-        return (
-            <div>
-                <SRMap />
-            </div>
-        )
+        const setViewport = viewport => this.setState(viewport);
+
+        const { selectedLocation } = this;
+        const setSelectedLocation = selectedLocation => this.setState({
+            locationSelected: true,
+            selectedLocation
+        });
+        const hideSelectedLocation = selectedLocation => this.setState({
+            locationSelected: false,
+            selectedLocation
+        });
+
+        return(
+            <MapGL
+                {...this.state.viewport}
+                accessToken={"pk.eyJ1IjoiYmNvbnMwMDkiLCJhIjoiY2tnbGJnbjhuMHBzbTJ6cXAwdjgwNTNsYyJ9.y5i5-ayp_o_o_9YrC5QQMg"}
+                mapStyle="mapbox://styles/bcons009/ckglkhmek02vv1awygco6zo83"
+                onViewportChange={viewport => {
+                    setViewport(viewport);
+                }}
+                style={{ width: '100vw', height: '100vh' }}
+            >
+                { this.props.locationsLL.map(location => (
+                    <Marker
+                        key={location.id}
+                        latitude={location.latitude}
+                        longitude={location.longitude}
+                    >
+                        <button 
+                            style={styles.buttonStyle}
+                            onClick={e => {
+                                e.preventDefault();
+                                setSelectedLocation(location);
+                            }}
+                        >
+                            <img 
+                                src="https://upload.wikimedia.org/wikipedia/commons/8/88/Map_marker.svg" 
+                                alt="Location Icon" 
+                            />
+                        </button>
+                    </Marker>
+                )) }
+                {this.state.locationSelected ? (
+                    <Popup 
+                        latitude={this.state.selectedLocation.latitude} 
+                        longitude={this.state.selectedLocation.longitude}
+                        onClose={() => {
+                            hideSelectedLocation(null);
+                        }}
+                    >
+                        <h3>{this.state.selectedLocation.name}</h3>
+                        <p>{this.state.selectedLocation.address}</p>
+                    </Popup>
+                ) : <div>NULL</div>}
+            </MapGL>
+        );
     }
 }
+
+const styles = {
+    buttonStyle: {
+        height: "47px",
+        width: "30px",
+        padding: "0",
+        border: "none",
+        background: "none"
+    },
+    markerStyle: {
+        width: "500%",
+        height: "500%",
+        marginTop: "-50px",
+        marginLeft: "-7px"
+    }
+}
+
+const mapStateToProps = state => ({
+    locationsLL: state.locationsLL.locationsLL
+});
+
+export default connect(mapStateToProps, { getLocationsLL })(SearchResultsMap);
