@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-image: url("./leadmanager/frontend/static/frontend/resources/image.jpg");
+    background-color: bisque;
+}
+
+.h1{
+    color: #4286f4;
+    margin-top: 30px;
+}
+
+.search_page{
+    text-align: center;
+    width:80%;
+    margin: 0 auto;
+}
+.input {
+ width:100%;
+ margin: 10px;
+ padding:18px 10px;
+ border-radius: 4px;
+ border: 1 px solid #4e5766;
+ box-shadow: 1px 0.5px #888888;
+ font-size: 18px;    
+}
+
+.btn_submit{
+    padding: 12px 10px;
+    width: 30%;
+    border-radius: 4px;
+    background-color: #4286f4;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+}
