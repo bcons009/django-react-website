@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Header from './layout/Header'
 import Search from './search'
 
 class App extends Component {
     render() {
         return (
-           <Search />
+            <div>
+                <Header />
+                <Search />
+            </div>
+            
         )
     }
 }
