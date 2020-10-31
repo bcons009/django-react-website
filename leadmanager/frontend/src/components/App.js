@@ -10,6 +10,8 @@ import store from '../store';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
 
+import Locations from "./Locations";
+import SearchResultsMap from "./SearchResultsMap";
 
 class App extends Component {
     render() {
@@ -26,6 +28,8 @@ class App extends Component {
 		            	<Search />
 		            </Fragment>
 		        </Router> 
+			// <Locations />
+                	<SearchResultsMap />
 	       </Provider> 
        */ )
     }
