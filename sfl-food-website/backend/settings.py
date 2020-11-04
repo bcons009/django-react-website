@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# new line from trevor
+APPEND_SLASH = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -41,7 +43,15 @@ INSTALLED_APPS = [
     'locations',
     'rest_framework',
     'frontend',
+    'knox',
+    'accounts'
 ]
+
+# trevor
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
