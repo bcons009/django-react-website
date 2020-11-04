@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
+import MapDisplay from "./displays/MapDisplay";
 
 export default class Search extends Component {
 
@@ -42,11 +43,14 @@ export default class Search extends Component {
         {this.state.meals ? (
         <div className={styles.mealsContainer}>
           <div id="divmap" className={styles.mapSection}>
-            <img
-              width="90%"
-              src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
-              alt="meal-thumbnail"
-            />
+            {/*
+              <img
+                width="90%"
+                src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
+                alt="meal-thumbnail"
+              />
+            */}
+            <MapDisplay />
           </div>
           {this.state.meals.map((meal, index) => (
           <div className={styles.singleMeal} key={index}>

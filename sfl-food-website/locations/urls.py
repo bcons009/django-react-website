@@ -7,9 +7,9 @@ router.register('api/locations', OrgLocationViewSet, 'locations')
 router.register('api/schedules', OrgScheduleViewSet, 'schedules')
 router.register('api/locationsLL', OrgLocationLLViewSet, 'locationsLL')
 
-# urlpatterns = router.urls
+urlpatterns = router.urls
 
-urlpatterns = [
-    path('api/', include(router.urls)),
+urlpatterns += [
+    # path('api/', include(router.urls)),
     path('api/geocode', GeocodeAPI.as_view(), name='geocode')
 ]

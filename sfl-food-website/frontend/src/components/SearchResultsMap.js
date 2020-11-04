@@ -13,7 +13,9 @@ export class SearchResultsMap extends Component {
             viewport: {
                 latitude: 26.122438,
                 longitude: -80.137314,
-                zoom: 8.8
+                zoom: 8.8,
+                width: '100%',
+                height: '100%'
             }
         }
     }
