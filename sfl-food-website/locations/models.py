@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 #    message = models.CharField(max_length=500, blank=True)
 #    created_at = models.DateTimeField(auto_now_add=True)
 
+
 class OrgLocation(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=250)
@@ -14,15 +15,16 @@ class OrgLocation(models.Model):
     cost = models.CharField(max_length=100)
     website = models.URLField()
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=10)      
-        # Numbers only, no room for a format like "(xxx) xxx-xxxx"
-        # Assumes all phone numbers will be from the US
+    phone_number = models.CharField(max_length=10)
+    # Numbers only, no room for a format like "(xxx) xxx-xxxx"
+    # Assumes all phone numbers will be from the US
     last_updated_at = models.DateTimeField(auto_now=True)
     # not included:
-        # schedule
-        # reviews
-        # tags
-        # photos (Google Maps Places API)
+    # schedule
+    # reviews
+    # tags
+    # photos (Google Maps Places API)
+
 
 class OrgSchedule(models.Model):
     location = models.OneToOneField(
@@ -39,6 +41,7 @@ class OrgSchedule(models.Model):
     saturday = models.CharField(max_length=30)
     last_updated_at = models.DateTimeField(auto_now=True)
 
+
 class OrgLocationLL(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=250)
@@ -48,12 +51,12 @@ class OrgLocationLL(models.Model):
     cost = models.CharField(max_length=100)
     website = models.URLField()
     email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=10)      
-        # Numbers only, no room for a format like "(xxx) xxx-xxxx"
-        # Assumes all phone numbers will be from the US
+    phone_number = models.CharField(max_length=10)
+    # Numbers only, no room for a format like "(xxx) xxx-xxxx"
+    # Assumes all phone numbers will be from the US
     last_updated_at = models.DateTimeField(auto_now=True)
     # not included:
-        # schedule
-        # reviews
-        # tags
-        # photos (Google Maps Places API)
+    # schedule
+    # reviews
+    # tags
+    # photos (Google Maps Places API)
