@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 // import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
-import MapDisplay from "./displays/MapDisplay";
+import {Link } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
+import Informationpage from './Informationpage.js';
 
 export default class Search extends Component {
 
@@ -24,7 +26,7 @@ export default class Search extends Component {
           .then(response => {
             //return response.json();
             var jsondata = "{\"meals\": [{\"eventid\": \"52955\",\"eventName\": \"Free give away\",\"eventAddress\": \"123 Vermont St, Weston, FL\",\"eventDate\": \"12/10/2020\"},{\"eventid\": \"52355\",\"eventName\": \"YMCA Food Drive\",\"eventAddress\": \"1464 Nashville St, Miami, FL\",\"eventDate\": \"11/21/2020\"},{\"eventid\": \"555\",\"eventName\": \"Publix Food Drive\",\"eventAddress\": \"21 Baker St, Cooper city, FL\",\"eventDate\": \"10/29/2020\"}]}";
-            document.getElementById("divmap").style.visibility = "visible";
+            document.getElementById("divmap").style.display = "inline";
             return JSON.parse(jsondata);
           })
           .then(jsonData => {
@@ -43,21 +45,18 @@ export default class Search extends Component {
         {this.state.meals ? (
         <div className={styles.mealsContainer}>
           <div id="divmap" className={styles.mapSection}>
-            {/*
-              <img
-                width="90%"
-                src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
-                alt="meal-thumbnail"
-              />
-            */}
-            <MapDisplay />
+            <img
+              width="90%"
+              src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
+              alt="meal-thumbnail"
+            />
           </div>
           {this.state.meals.map((meal, index) => (
           <div className={styles.singleMeal} key={index}>
             <div className={styles.singleMealContainer}>
               <div className={styles.singleMealLeft}>
                 <h2>
-                  <a href="#">{meal.eventName}</a>
+                <Link to="/Informationpage"><a href="#">{meal.eventName}</a></Link>
                 </h2>
                 <p>
                   Weston food drive serves everyone
