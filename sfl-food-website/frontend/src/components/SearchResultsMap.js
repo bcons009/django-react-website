@@ -7,17 +7,16 @@ import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
 export class SearchResultsMap extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = { 
             locationSelected: false,
             viewport: {
                 latitude: 26.122438,
                 longitude: -80.137314,
                 zoom: 8.8,
-                width: '100%',
-                height: '100%'
             }
-        }
+        };
+        // this.mapRef = React.createRef();
     }
 
     selectedLocation = {
@@ -35,6 +34,12 @@ export class SearchResultsMap extends Component {
 
     componentDidMount() {
         this.props.getLocationsLL();
+        /*
+        const map = this.mapRef.current.getMap(); 
+        map.once('load', () => {
+            map.resize();
+        });
+        */
     }
 
     render() {
@@ -58,7 +63,7 @@ export class SearchResultsMap extends Component {
                 onViewportChange={viewport => {
                     setViewport(viewport);
                 }}
-                style={{ width: '100vw', height: '100vh' }}
+                style={{ width: '100%', height: '100%' }}
             >
                 { this.props.locationsLL.map(location => (
                     <Marker

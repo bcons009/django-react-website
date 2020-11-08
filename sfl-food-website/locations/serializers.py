@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from locations.models import OrgLocation, OrgSchedule, OrgLocationLL
+from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
 
 # OrgLocation Serializer
 class OrgLocationSerializer(serializers.ModelSerializer):
@@ -17,4 +17,10 @@ class OrgScheduleSerializer(serializers.ModelSerializer):
 class OrgLocationLLSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrgLocationLL
+        fields = '__all__'
+
+# UserLocation Serializer
+class UserLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserLocation
         fields = '__all__'

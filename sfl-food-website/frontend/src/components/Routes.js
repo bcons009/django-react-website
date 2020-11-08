@@ -6,6 +6,7 @@ import Search from "./Search";
 import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
 import UserAccounts from './UserAccounts';
+import AddEventPage from './user-events/AddEventPage'
 
 import history from './history';
 
@@ -19,6 +20,7 @@ export default class Routes extends Component {
                     <Route path="/Map" component={MapDisplay} />
                     <Route path="/Locations" component={LocationsDisplay} />
                     <Route path="/UserAccounts" component={UserAccounts} />
+                    <Route path="/AddEventPage" component={AddEventPage} />
                 </Switch>
             </Router>
         )

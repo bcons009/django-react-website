@@ -24,7 +24,7 @@ export default class Search extends Component {
           .then(response => {
             //return response.json();
             var jsondata = "{\"meals\": [{\"eventid\": \"52955\",\"eventName\": \"Free give away\",\"eventAddress\": \"123 Vermont St, Weston, FL\",\"eventDate\": \"12/10/2020\"},{\"eventid\": \"52355\",\"eventName\": \"YMCA Food Drive\",\"eventAddress\": \"1464 Nashville St, Miami, FL\",\"eventDate\": \"11/21/2020\"},{\"eventid\": \"555\",\"eventName\": \"Publix Food Drive\",\"eventAddress\": \"21 Baker St, Cooper city, FL\",\"eventDate\": \"10/29/2020\"}]}";
-            document.getElementById("divmap").style.display = "inline";
+            document.getElementById("divmap").style.visibility = "visible";
             return JSON.parse(jsondata);
           })
           .then(jsonData => {
