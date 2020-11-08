@@ -30,6 +30,12 @@ export class Home extends Component {
                     >
                         User Sign Up/Log in (Trevor)
                     </Link>
+                    <br />
+                    <Link
+                        to='/AddEventPage'
+                    >
+                        Add Event Form (Bryan)
+                    </Link>
                 </form>
             </div>
         )

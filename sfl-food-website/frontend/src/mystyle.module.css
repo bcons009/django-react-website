@@ -92,12 +92,15 @@ button {
     float: left;
     /*border: 1px solid green;*/
     width: 35%;
+    height: 35%;
     top: 0;
     margin: 10px;
+    padding: 10px;
     position: sticky;
     /*position: -webkit-sticky;*/
     background-color: white;
-    display: none;
+    /* display: none; */
+    visibility: hidden;
 }
 
 .singleMealContainer {
