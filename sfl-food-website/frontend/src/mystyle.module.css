@@ -110,3 +110,49 @@ button {
     box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
 }
+
+ /*Info page styles start here*/
+  
+ .mainDiv {
+    margin : 100px 100px 100px 100px;
+    padding : 5px 5px 5px 5px;
+    float: left;
+    border-radius: 18px;
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
+  }
+  .mainDiv a{
+
+    color: #1abc9c;
+  }
+  .eventHeading {
+    font-weight: bold;
+    color: black;
+   
+  }
+  .programDescription{
+
+    line-height: 2.4rem;
+    margin: 15px auto 30px auto;
+  }
+  .subHeads{
+    border-top: 2px solid #ECE9DE;
+    padding: 20px 0px 20px 0px;
+  }
+  .subHeads span{
+    
+    margin-left: 10px;
+  }
+  .subHeads h5{
+    font-weight: 700;
+    font-size: 18px;
+    
+  }
+  .helo::before {
+    font: normal normal normal 14px/1 FontAwesome;
+    font-family: 'FontAwesome' !important;
+    content: "\f02b";
+  }
+
+  .listInline{
+      list-style: none;
+  }

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 // import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
 import MapDisplay from "./displays/MapDisplay";
+import Informationpage from './Informationpage.js';
+import { Link } from "react-router-dom";
 
 export default class Search extends Component {
 
@@ -57,7 +59,7 @@ export default class Search extends Component {
             <div className={styles.singleMealContainer}>
               <div className={styles.singleMealLeft}>
                 <h2>
-                  <a href="#">{meal.eventName}</a>
+                  <Link to="/Informationpage"><a href="#">{meal.eventName}</a></Link>
                 </h2>
                 <p>
                   Weston food drive serves everyone
