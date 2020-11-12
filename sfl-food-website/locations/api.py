@@ -1,6 +1,6 @@
-from locations.models import OrgLocation, OrgSchedule, OrgLocationLL
+from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
 from rest_framework import viewsets, permissions, generics
-from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer
+from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer
 
 from rest_framework.response import Response
 import requests
@@ -39,6 +39,16 @@ class OrgLocationLLViewSet(viewsets.ModelViewSet):
 
 
 # Geocode Route for Search
+
+# UserLocationLL ViewSet
+class UserLocationViewSet(viewsets.ModelViewSet):
+    queryset = UserLocation.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = UserLocationSerializer
+
+
 class GeocodeAPI(generics.GenericAPIView):
 
     authentication_classes = []
@@ -61,7 +71,6 @@ class GeocodeAPI(generics.GenericAPIView):
 
         # return in_range
         return Response(json_in_range)
-
 
 
 # GetLocationsInRange --- Helper Function
@@ -92,6 +101,5 @@ def GetLocationsInRange(queryset, location, max_distance=5):
         if(dist <= max_distance):
             in_range.append(loc.name)
             print(loc.name)
-
 
     return in_range

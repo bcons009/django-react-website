@@ -60,3 +60,21 @@ class OrgLocationLL(models.Model):
     # reviews
     # tags
     # photos (Google Maps Places API)
+    # schedule
+    # reviews
+    # tags
+    # photos (Google Maps Places API)
+
+
+class UserLocation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=250)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    description = models.CharField(max_length=2000)
+    # date field
+    # time field
+    email = models.EmailField(max_length=100)
+    phone_number = models.CharField(max_length=14)
+    last_updated_at = models.DateTimeField(auto_now=True)
