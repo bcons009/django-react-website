@@ -18,8 +18,8 @@ export default class UserAccounts extends Component {
 		            <Fragment>
 		        		<Header />
 		            	<Switch>
-		            		<Route exact path="./login" component={ Login } />
-		             		<Route exact path="./register" component={ Register } />
+		            		<Route exact path="/login" component={ Login } />
+		             		<Route exact path="/register" component={ Register } />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 
