@@ -7,6 +7,12 @@ export class Home extends Component {
             <div>
                 <h1>Dev Test Home Page</h1>
                 <form>
+                <Link
+                        to='/LandingPage'
+                    >
+                        Landing page (Maimuna)
+                    </Link>
+                    <br />
                     <Link
                         to='/Search'
                     >
