@@ -65,8 +65,9 @@ class UserLocation(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     description = models.CharField(max_length=2000)
-    # date field
-    # time field
+    date = models.DateField(default='2020-01-01')
+    start_time = models.TimeField(default='00:00')
+    end_time = models.TimeField(default='00:00')
     email = models.EmailField(max_length=100)
     phone_number = models.CharField(max_length=14)
     last_updated_at = models.DateTimeField(auto_now=True)

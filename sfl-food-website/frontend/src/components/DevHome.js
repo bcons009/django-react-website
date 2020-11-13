@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 
-export class Home extends Component {
+export class DevHome extends Component {
     render() {
         return (
             <div>
@@ -36,10 +36,16 @@ export class Home extends Component {
                     >
                         Add Event Form (Bryan)
                     </Link>
+                    <br />
+                    <Link
+                        to='/ViewYourEvents'
+                    >
+                        View Events Created by Logged-in User (Bryan)
+                    </Link>
                 </form>
             </div>
         )
     }
 }
 
-export default Home
+export default DevHome

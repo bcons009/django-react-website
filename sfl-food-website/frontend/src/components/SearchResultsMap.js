@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getLocationsLL } from '../actions/locationsLL'
+import { getULocations } from '../actions/user-locations'
 import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
 
 export class SearchResultsMap extends Component {
@@ -16,7 +17,6 @@ export class SearchResultsMap extends Component {
                 zoom: 8.8,
             }
         };
-        // this.mapRef = React.createRef();
     }
 
     selectedLocation = {
@@ -29,17 +29,13 @@ export class SearchResultsMap extends Component {
     };
 
     static propTypes = {
-        locationsLL: PropTypes.array.isRequired
+        locationsLL: PropTypes.array.isRequired,
+        uLocations: PropTypes.array.isRequired,
     }
 
     componentDidMount() {
         this.props.getLocationsLL();
-        /*
-        const map = this.mapRef.current.getMap(); 
-        map.once('load', () => {
-            map.resize();
-        });
-        */
+        this.props.getULocations();
     }
 
     render() {
@@ -65,6 +61,26 @@ export class SearchResultsMap extends Component {
                 }}
                 style={{ width: '100%', height: '100%' }}
             >
+                { this.props.uLocations.map(location => (
+                    <Marker
+                        key={location.id}
+                        latitude={location.latitude}
+                        longitude={location.longitude}
+                    >
+                        <button 
+                            style={styles.buttonStyle}
+                            onClick={e => {
+                                e.preventDefault();
+                                setSelectedLocation(location);
+                            }}
+                        >
+                            <img 
+                                src="http://maps.google.com/mapfiles/ms/micons/red.png"
+                                alt="Location Icon" 
+                            />
+                        </button>
+                    </Marker>
+                )) }
                 { this.props.locationsLL.map(location => (
                     <Marker
                         key={location.id}
@@ -79,7 +95,7 @@ export class SearchResultsMap extends Component {
                             }}
                         >
                             <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/8/88/Map_marker.svg" 
+                                src="http://maps.google.com/mapfiles/ms/micons/blue.png"
                                 alt="Location Icon" 
                             />
                         </button>
@@ -119,7 +135,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    locationsLL: state.locationsLL.locationsLL
+    locationsLL: state.locationsLL.locationsLL,
+    uLocations: state.uLocations.uLocations,
 });
 
-export default connect(mapStateToProps, { getLocationsLL })(SearchResultsMap);
+export default connect(mapStateToProps, { getLocationsLL, getULocations })(SearchResultsMap);

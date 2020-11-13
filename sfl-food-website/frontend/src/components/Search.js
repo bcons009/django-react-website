@@ -59,7 +59,7 @@ export default class Search extends Component {
             <div className={styles.singleMealContainer}>
               <div className={styles.singleMealLeft}>
                 <h2>
-                  <Link to="/Informationpage"><a href="#">{meal.eventName}</a></Link>
+                  <Link to="/Informationpage">{meal.eventName}</Link>
                 </h2>
                 <p>
                   Weston food drive serves everyone

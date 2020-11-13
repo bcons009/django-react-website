@@ -1,5 +1,5 @@
 from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
-from rest_framework import viewsets, permissions, generics
+from rest_framework import viewsets, permissions, generics, mixins
 from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer
 
 from rest_framework.response import Response
@@ -30,12 +30,10 @@ class OrgLocationLLViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = OrgLocationLLSerializer
 
-# UserLocationLL ViewSet
+# UserLocation ViewSet
 class UserLocationViewSet(viewsets.ModelViewSet):
     queryset = UserLocation.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
+    permission_classes = [permissions.AllowAny]
     serializer_class = UserLocationSerializer
 
 class GeocodeAPI(generics.GenericAPIView):
