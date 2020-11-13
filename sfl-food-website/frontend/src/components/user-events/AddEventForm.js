@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addULocation } from '../../actions/user-locations';
 import { Redirect } from "react-router-dom";
-import $ from 'jquery';
 
 export class AddEventForm extends Component {
     constructor(props) {

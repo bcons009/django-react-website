@@ -1,10 +1,11 @@
 from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
-from rest_framework import viewsets, permissions, generics, mixins
+from rest_framework import viewsets, permissions, generics
 from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer
 
 from rest_framework.response import Response
 import requests
 import json
+from geopy import distance
 
 # OrgLocation ViewSet
 class OrgLocationViewSet(viewsets.ModelViewSet):
@@ -30,6 +31,8 @@ class OrgLocationLLViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = OrgLocationLLSerializer
 
+# Geocode Route for Search
+
 # UserLocation ViewSet
 class UserLocationViewSet(viewsets.ModelViewSet):
     queryset = UserLocation.objects.all()
@@ -47,7 +50,7 @@ class GeocodeAPI(generics.GenericAPIView):
 
         # if distance == 0, then user selected 'Near Me' option, which defaults to 5 miles
         if(request.data['distance'] != 0):
-            max_distance = request.data['distance']
+            max_distance = int(request.data['distance'])
             in_range = GetLocationsInRange(queryset, location, max_distance)
 
         else:
@@ -58,7 +61,6 @@ class GeocodeAPI(generics.GenericAPIView):
 
         # return in_range
         return Response(json_in_range)
-
 
 
 # GetLocationsInRange --- Helper Function
@@ -89,6 +91,5 @@ def GetLocationsInRange(queryset, location, max_distance=5):
         if(dist <= max_distance):
             in_range.append(loc.name)
             print(loc.name)
-
 
     return in_range

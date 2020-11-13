@@ -7,6 +7,8 @@ export const ADD_U_LOCATION  = "ADD_U_LOCATION";
 export const GET_U_LOCATIONS  = "GET_U_LOCATIONS";
 export const DELETE_U_LOCATION = "DELETE_U_LOCATION";
 
+export const GET_SEARCH_RESULTS = "GET_SEARCH_RESULTS";
+
 export const GET_ERRORS = 'GET_ERRORS';
 export const CREATE_MESSAGE = 'CREATE_MESSAGE';
 export const USER_LOADING = 'USER_LOADING';
