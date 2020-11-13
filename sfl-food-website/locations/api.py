@@ -60,7 +60,7 @@ class GeocodeAPI(generics.GenericAPIView):
 
         # if distance == 0, then user selected 'Near Me' option, which defaults to 5 miles
         if(request.data['distance'] != 0):
-            max_distance = request.data['distance']
+            max_distance = int(request.data['distance'])
             in_range = GetLocationsInRange(queryset, location, max_distance)
 
         else:

@@ -21,6 +21,7 @@ h1 {
     top: 0;
 
 }
+
 input {
     width: 90%;
     margin: 10px;
@@ -40,6 +41,10 @@ button {
     color: #ffffff;
     cursor: pointer;
     font-size: 18px;
+}
+
+.locationField {
+    margin-left: 40px;
 }
 
 .mealsContainer {
