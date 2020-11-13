@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from .api import OrgLocationViewSet, OrgScheduleViewSet, OrgLocationLLViewSet, UserLocationViewSet, GeocodeAPI
+from django.views.decorators.csrf import csrf_exempt
 
 router = routers.DefaultRouter()
 router.register('api/locations', OrgLocationViewSet, 'locations')
@@ -12,5 +13,6 @@ urlpatterns = router.urls
 
 urlpatterns += [
     # path('api/', include(router.urls)),
-    path('api/geocode', GeocodeAPI.as_view(), name='geocode')
+    path('api/geocode', GeocodeAPI.as_view(), name='geocode'),
+    # path('api/userlocs', csrf_exempt(UserLocationAPI.as_view()), name='userlocs')
 ]

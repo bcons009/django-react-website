@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 
-import Home from "./Home";
+import DevHome from "./DevHome";
 import Search from "./Search";
 import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
@@ -16,7 +16,7 @@ export default class Routes extends Component {
         return (
             <Router history={history}>
                 <Switch>
-                    <Route path="/" exact component={Home} />
+                    <Route path="/" exact component={DevHome} />
                     <Route path="/Search" exact component={Search} />
                     <Route path="/Map" component={MapDisplay} />
                     <Route path="/Locations" component={LocationsDisplay} />
