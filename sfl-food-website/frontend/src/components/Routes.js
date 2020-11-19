@@ -11,6 +11,7 @@ import Informationpage from "./Informationpage";
 
 import history from './history';
 
+
 export default class Routes extends Component {
     render() {
         return (
@@ -18,6 +19,7 @@ export default class Routes extends Component {
                 <Switch>
                     <Route path="/" exact component={DevHome} />
                     <Route path="/Search" exact component={Search} />
+                    <Route path="/Informationpage" exact component={Informationpage} />
                     <Route path="/Map" component={MapDisplay} />
                     <Route path="/Locations" component={LocationsDisplay} />
                     <Route path="/UserAccounts" component={UserAccounts} />
