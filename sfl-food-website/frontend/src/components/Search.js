@@ -32,14 +32,7 @@ export default class Search extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    this.getResults()/*.then(res => {
-      console.log(res.data.data);
-      document.getElementById("divmap").style.visibility = "visible";
-      test = [1, 2, 3, 4];
-      console.log(test);
-      this.setState({ meals: test });
-    })*/;
-    console.log('hellooooooo');
+    this.getResults();
   };
 
   async getResults() {
@@ -50,22 +43,26 @@ export default class Search extends Component {
         },
     };
 
-    // Request Body
     // ***********WILL NEED TO ADD SEARCH VALUE***********
-    const body = {
+    const params = {
       'location': this.state.searchLocation,
       'distance': this.state.searchDistance
     }
 
     //console.log(this.state.searchDistance)
 
-    const res = await axios.post('/api/geocode', body, config)
-    console.log('hellooooooooooo');
-    this.setState({ meals: res.data.data });
-    //return res;
+    const res = await axios.get('/api/geocode', { params: params });
+    //console.log(res.data);
+    if(res.data === 'no results'){
+      alert('No results. Please try again.');
+    }
+    else {
+      this.setState({ meals: res.data });
+    }
+
   }
 
-    
+  /*  
   handleOnChange = event => {
     this.setState({ searchValue: event.target.value });
   };
@@ -73,10 +70,10 @@ export default class Search extends Component {
   handleSearch = () => {
     this.makeApiCall(this.state.searchValue);
   };
-
+  
   makeApiCall = searchInput => {
     var searchUrl = `http://localhost:8000/api/locations/`;
-    /*fetch(searchUrl)
+    fetch(searchUrl)
       .then(response => {
        
         //alert(JSON.stringify(response)) ;
@@ -88,7 +85,7 @@ export default class Search extends Component {
        // alert("meaks"+meals);
         console.log("OK",JSON.stringify(jsonData.meals));
         this.setState({ meals: jsonData.meals });
-      });*/
+      });
       let currentComponent = this;
       fetch(searchUrl).then(function(response) {
         response.json().then(function(parsedJson) {
@@ -99,9 +96,10 @@ export default class Search extends Component {
         .then(jsonData  => {
           currentComponent.setState({ meals: jsonData  });
         });
-      })
-     
+      }) 
   };
+  */
+
 
   render() {
     return (
