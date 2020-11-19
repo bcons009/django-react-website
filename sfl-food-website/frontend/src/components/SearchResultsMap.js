@@ -38,6 +38,22 @@ export class SearchResultsMap extends Component {
         this.props.getULocations();
     }
 
+    dateToday = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1;    // January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd = '0' + dd
+            } 
+            if(mm<10){
+                mm = '0' + mm
+            } 
+
+        today = yyyy + '-' + mm + '-' + dd;
+        return today;
+    }
+
     render() {
         const setViewport = viewport => this.setState(viewport);
 
@@ -61,7 +77,9 @@ export class SearchResultsMap extends Component {
                 }}
                 style={{ width: '100%', height: '100%' }}
             >
-                { this.props.uLocations.map(location => (
+                { this.props.uLocations.filter(location => (
+                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime()
+                )).map(location => (
                     <Marker
                         key={location.id}
                         latitude={location.latitude}

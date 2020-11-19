@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addULocation } from '../../actions/user-locations';
+import { editULocation, getULocations } from '../../actions/user-locations';
 import { Redirect } from "react-router-dom";
 import { WithContext as ReactTags } from 'react-tag-input';
 import '../css/ReactTags.css'
@@ -16,10 +16,9 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 let tags = "|";
 
-export class AddEventForm extends Component {
+export class EditEventForm extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             hover: false,
             user: "",
@@ -35,6 +34,7 @@ export class AddEventForm extends Component {
             end_time: "",
             email: "",
             phone_number: "",
+            onClickId: props.location.id,
             is_loading: false,
             tags: [],
             suggestions: [
@@ -64,7 +64,47 @@ export class AddEventForm extends Component {
 
     static propTypes = {
         auth: PropTypes.object.isRequired,
-        addULocation: PropTypes.func.isRequired
+        editULocation: PropTypes.func.isRequired,
+        getULocations: PropTypes.func.isRequired,
+    }
+
+    componentDidMount(){
+        this.props.getULocations();
+        // some function that runs after getULocations that sets the state to the values
+        // of each input field to the record whose ID matches the event ID passed in
+
+        const { isAuthenticated } = this.props.auth;
+        if (isAuthenticated) {
+            const eULocation = this.props.uLocations.find(location => location.id === this.state.onClickId);
+
+            // split address
+            const addr = eULocation.address.split(",");
+
+            // split tags
+            const tags_str = eULocation.tags.replace(/^\|+|\|+$/g, '');
+            const tags_arr = tags_str.split("||");
+
+            tags_arr.forEach(tag => {
+                this.setState(prevState => ({
+                    tags: [...prevState.tags, { id: tag, text: tag }]
+                }))
+            });
+        
+            this.setState({
+                name: eULocation.name,
+                address: addr[0],
+                city: addr[1].trim(),
+                zip_code: addr[2].trim(),
+                latitude: eULocation.latitude,
+                longitude: eULocation.longitude,
+                description: eULocation.description,
+                date: eULocation.date,
+                start_time: eULocation.start_time,
+                end_time: eULocation.end_time,
+                email: eULocation.email,
+                phone_number: eULocation.phone_number,
+            });
+        }
     }
 
     handleDelete(i) {
@@ -198,21 +238,21 @@ export class AddEventForm extends Component {
                         longitude: response['data'][1]['longitude'] 
                     });
                     const { name, address, latitude, longitude, date, start_time, end_time, description, email, phone_number } = this.state;
-                    
+
                     if (25.3 <= latitude && latitude <= 26.8 && -80.6 <= longitude && longitude <= -80.0) {
                         const uLocation = { user, name, address, latitude, longitude, date, start_time, end_time, description, email, phone_number, tags };
                     
-                        this.props.addULocation(uLocation);
+                        this.props.editULocation(uLocation, this.state.onClickId);
                         console.log(uLocation);
 
-                        alert("Event has been successfully added!");
+                        alert("Event has been successfully updated!");
 
                         // redirect
                         window.location.href = '#';
                     }
                     else {
                         alert("Error: Event address is not within South Florida.");
-                    }   
+                    }                    
                 })
                 .catch(err => alert(err));
         }
@@ -224,7 +264,7 @@ export class AddEventForm extends Component {
     render() {
         const { isAuthenticated } = this.props.auth;
         const { name, address, city, zip_code, date, start_time, end_time, description, email, phone_number } = this.state;   
-        const { tags, suggestions } = this.state;  
+        const { tags, suggestions } = this.state;    
 
         const toggleHover = () => {
             this.setState({hover: !this.state.hover})
@@ -267,12 +307,12 @@ export class AddEventForm extends Component {
             />
         );
 
-
         const loggedIn = (
             <div style={styles.outerDivStyle}>
+                <p>{this.state.onClickTest}</p>
                 <form style={styles.formStyle} onSubmit={this.onSubmit}>
                     <label style={styles.labelStyle}>
-                        <h1 style={styles.headerStyle}>Add Event</h1>
+                        <h1 style={styles.headerStyle}>Edit Event</h1>
                     </label>
                     <label style={styles.labelStyle}>
                         Event Name:
@@ -301,6 +341,8 @@ export class AddEventForm extends Component {
                                 style={styles.inputStyle}
                                 value={address}
                                 onChange={this.onChange}
+                                pattern="[a-zA-Z0-9.\- ]+"
+                                title="Only alphanumeric characters, periods and dashes are accepted in this field."
                                 required
                             />
                             City
@@ -312,6 +354,8 @@ export class AddEventForm extends Component {
                                 style={styles.inputStyle}
                                 value={city}
                                 onChange={this.onChange}
+                                pattern="[a-zA-Z0-9]+"
+                                title="Only alphanumeric characters are accepted in this field."
                                 required
                             />
                             <br />
@@ -324,6 +368,8 @@ export class AddEventForm extends Component {
                                 style={styles.inputStyle}
                                 value={zip_code}
                                 onChange={this.onChange}
+                                pattern="[0-9\-]+"
+                                title="Only number characters and dashes are accepted in this field."
                                 required
                             />
                         </div>                        
@@ -520,11 +566,12 @@ const styles = {
         fontSize: "1.2em",
         fontWeight: "bold",
         margin: "10px 0"
-    }
+    },
 }
 
 const mapStateToProps = (state) => ({
-	auth: state.auth,
+    auth: state.auth,
+    uLocations: state.uLocations.uLocations,
 });
 
-export default connect(mapStateToProps, { addULocation })(AddEventForm);
+export default connect(mapStateToProps, { getULocations, editULocation })(EditEventForm);

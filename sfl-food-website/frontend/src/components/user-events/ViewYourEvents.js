@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect } from "react-router-dom";
 import { getULocations, deleteULocation } from '../../actions/user-locations'
+import LinkButton from "../misc/LinkButton";
 
 export class ViewYourEvents extends Component {
     constructor(props) {
@@ -100,19 +101,58 @@ export class ViewYourEvents extends Component {
         this.props.deleteULocation(id);
     }
 
+    dateToday = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1;    // January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd = '0' + dd
+            } 
+            if(mm<10){
+                mm = '0' + mm
+            } 
+
+        today = yyyy + '-' + mm + '-' + dd;
+        return today;
+    }
+
+    splitTags = tags => {
+        let tags_str = tags.replace(/^\|+|\|+$/g, '');
+        tags_str = tags_str.replace(/\|\|/g, ", ");
+        return tags_str
+    }
+
     render() {
         const { isAuthenticated, user } = this.props.auth;
 
-        let msg = null;
-        const events = this.props.uLocations.filter(location => location.user === user.id);
-        if (events.length === 0) {
-            msg = <div style={styles.nullMsgStyle}>No events to display...</div>;
+        let msg1 = null;
+        let msg2 = null;
+        let events_new = [];
+        let events_old = [];
+        if (isAuthenticated) {
+            events_new = this.props.uLocations.filter(location => (
+                        location.user === user.id
+                    )).filter(location => (
+                        new Date(location.date).getTime() >= new Date(this.dateToday()).getTime()
+                    ));
+            events_old = this.props.uLocations.filter(location => (
+                        location.user === user.id
+                    )).filter(location => (
+                        new Date(location.date).getTime() < new Date(this.dateToday()).getTime()
+                    ));
+        }
+        if (events_new.length === 0) {
+            msg1 = <div style={styles.nullMsgStyle}>No events to display...</div>;
+        }
+        if (events_old.length === 0) {
+            msg2 = <div style={styles.nullMsgStyle}>No events to display...</div>;
         }
 
         const loggedIn = (
             <div>
                 <h1 style={styles.headerStyle}>{ user ? `${user.username}'s Events:` : `` }</h1>
-                { msg }
+                { msg1 }
 
                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog">
@@ -141,7 +181,11 @@ export class ViewYourEvents extends Component {
                     </div>
                 </div>
 
-                { this.props.uLocations.filter(location => location.user === user.id).map(location => (
+                { this.props.uLocations.filter(location => (
+                    location.user === user.id
+                )).filter(location => (
+                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime()
+                )).map(location => (
                     <div 
                         key={location.id}
                         style={styles.outerDivStyle}
@@ -149,13 +193,66 @@ export class ViewYourEvents extends Component {
                         <div style={styles.titleBarStyle}>
                             <h2 style={styles.nameStyle}>{location.name}</h2>
                             <div style={styles.buttonDivStyle}>
-                                <button 
-                                    type="button" 
+                                <LinkButton
                                     className="btn btn-primary btn-sm"
-                                    
+                                    to={{
+                                        pathname: `/EditEventForm/${location.id}`,
+                                        id: location.id,
+                                    }}
                                 >
                                     Edit Listing
+                                </LinkButton>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-danger btn-sm"
+                                    data-toggle="modal" 
+                                    data-target="#exampleModal"
+                                    onClick={this.set_delete_popup.bind(this, location.id)}
+                                >
+                                    Delete Listing
                                 </button>
+                            </div>                            
+                        </div>
+                        <hr style={styles.hrStyle}/>
+                        <h3 style={styles.addrStyle}>{location.address}</h3>
+                        <h3 style={styles.h3Style}>{this.dateConvert(location.date)}</h3>
+                        <h3 style={styles.h3Style}>{this.timeConvert(location.start_time)} - {this.timeConvert(location.end_time)}</h3>
+                        <br />
+                        <p style={styles.descStyle}>{location.description}</p>
+                        <p>{this.splitTags(location.tags)}</p>
+                        <hr style={styles.hrStyle}/>
+                        <p style={styles.contactStyle}>Contact Info:</p>
+                        Phone Number: <a href={"tel:" + location.phone_number}>{location.phone_number}</a>
+                        <br />
+                        Email: <a href={"mailto:" + location.email}>{location.email}</a>
+                    </div>
+                )) }
+
+                <hr />
+                <h1 style={styles.headerStyle}>{ user ? `${user.username}'s Past Events:` : `` }</h1>
+                { msg2 }
+
+                { this.props.uLocations.filter(location => (
+                    location.user === user.id
+                )).filter(location => (
+                    new Date(location.date).getTime() < new Date(this.dateToday()).getTime()
+                )).map(location => (
+                    <div 
+                        key={location.id}
+                        style={styles.outerDivStyle}
+                    >
+                        <div style={styles.titleBarStyle}>
+                            <h2 style={styles.nameStyle}>{location.name}</h2>
+                            <div style={styles.buttonDivStyle}>
+                                <LinkButton
+                                    className="btn btn-primary btn-sm"
+                                    to={{
+                                        pathname: `/EditEventForm/${location.id}`,
+                                        id: location.id,
+                                    }}
+                                >
+                                    Edit Listing
+                                </LinkButton>
                                 <button 
                                     type="button" 
                                     className="btn btn-danger btn-sm"
@@ -251,7 +348,8 @@ const styles = {
         width: "100%",
         textAlign: "center",
         fontSize: "3rem",
-        opacity: "0.3"
+        opacity: "0.3",
+        margin: "0 auto 150px"
     }
 }
 

@@ -14,7 +14,8 @@ import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
 import AddEventForm from './user-events/AddEventForm'
 import Informationpage from "./Informationpage";
-import ViewYourEvents from './user-events/ViewYourEvents'
+import ViewYourEvents from './user-events/ViewYourEvents';
+import EditEventForm from './user-events/EditEventForm'
 
 import history from './history';
 
@@ -36,6 +37,7 @@ export default class UserAccounts extends Component {
 							<Route path="/AddEventPage" component={AddEventForm} />
 							<Route path="/Informationpage" exact component={Informationpage} />
 							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
+							<Route path="/EditEventForm/:id" component={EditEventForm} />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 
