@@ -21,7 +21,7 @@ export default class Search extends Component {
       };
     
       makeApiCall = searchInput => {
-        var searchUrl = `http://localhost:8000/api/locations/`;
+        var searchUrl = `http://localhost:8000/api/locationsLL/`;
         /*fetch(searchUrl)
           .then(response => {
            

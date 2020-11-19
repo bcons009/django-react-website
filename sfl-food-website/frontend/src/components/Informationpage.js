@@ -9,7 +9,8 @@ import styles from "../mystyle.module.css";
 
 export default class Informationpage extends Component {
   state = {
-    meals : []
+    meals : [],
+    schedules : []
   };
 
   
@@ -17,13 +18,35 @@ export default class Informationpage extends Component {
  /* static propTypes = {
     locations: PropTypes.array.isRequired
 }*/
-componentDidMount() {
-  this.makeApiCall();
+componentDidMount(props) {
+ 
+  this.makeLocationApiCall();
+  this.makeScheduleApiCall();
 }
 
-makeApiCall = searchInput => {
-  var searchUrl = `http://localhost:8000/api/locationsLL/1/`;
+makeLocationApiCall = searchInput => {
+  var pathname = this.props.location.pathname;
+  var res = pathname.split("/");
+  var ID = res[2];
+  var searchUrl = "http://localhost:8000/api/locationsLL/"+ID+"/";
   let currentComponent = this;
+  fetch(searchUrl).then(function(response) {
+    response.json().then(function(parsedJson) {
+    return parsedJson;
+    })
+    .then(jsonData  => {
+      currentComponent.setState({ meals: jsonData  });
+    })
+  })
+ 
+};
+
+makeScheduleApiCall = searchInput => {
+  var pathname = this.props.location.pathname;
+  var res = pathname.split("/");
+  var ID = res[2];
+  var searchUrl = "http://localhost:8000/api/schedules/"+ID+"/";
+  let currentComponent1 = this;
   fetch(searchUrl).then(function(response) {
     response.json().then(function(parsedJson) {
     console.log("response",parsedJson);
@@ -31,7 +54,7 @@ makeApiCall = searchInput => {
     })
     .then(jsonData  => {
       console.log("response2",JSON.stringify(jsonData));
-      currentComponent.setState({ meals: jsonData  });
+      currentComponent1.setState({ schedules: jsonData  });
     })
   })
  
@@ -87,25 +110,25 @@ makeApiCall = searchInput => {
         </div>
         <div className={styles.subHeads}>
           S:
-          <span>Closed</span>
+          <span>{this.state.schedules.sunday}</span>
           <br />
           M:
-          <span >8:00am - 5:00pm EST</span>
+          <span >{this.state.schedules.monday}</span>
           <br />
           T:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.tuesday}</span>
           <br />
           W:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.wednesday}</span>
           <br />
           T:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.thursday}</span>
           <br />
           F:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.friday}</span>
           <br />
           S:
-          <span>Closed</span>
+          <span>{this.state.schedules.saturday}</span>
           <br />
         </div>
         </div>
