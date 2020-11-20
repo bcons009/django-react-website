@@ -12,30 +12,85 @@ export default class Search extends Component {
 
   state = {
     searchValue: "hi",
-    searchLocation: "Miami, FL 33129",
+    searchLocation: "",
     searchDistance: 0,
     meals: []
-  };
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(this.success);
+  }
 
 
   valueChange = e => this.setState({
       searchValue: e.target.value
-  });
+  })
 
   locationChange = e => this.setState({
       searchLocation: e.target.value
-  });
+  })
 
   distanceChange = e => this.setState({
       searchDistance: e.target.value
-  });
+  })
+
+  getLocation = position => {
+    console.log(position);
+  }
+
+
+  async success(pos) {
+    const { latitude, longitude } = pos.coords;
+    
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+    };
+
+    const params = {
+      'latitude': latitude,
+      'longitude': longitude
+    }
+
+    //console.log(this.state.searchDistance)
+
+    const res = await axios.get('/api/revGeocode', { params: params });
+    const location = res.data['location'];
+
+
+    console.log(res.data['location']);
+  }
+
+  locateUser() {
+    console.log('hi');
+    if (navigator.geolocation) {
+     /* navigator.geolocation
+        .getCurrentPosition((pos) => {
+          const { latitude, longitude } = pos.coords;
+          const apiKey = "2de14d5ec4835742c7b6d339ab0b4e29";
+          fetch(`http://api.positionstack.com/v1/reverse?access_key=${apiKey}&query=${latitude},${longitude}&output=json`)
+            .then(res => res.json())
+            .then(res => getLocation);
+        } function(pos) {
+                console.log(pos);
+                const { latitude, longitude } = pos.coords;
+                console.log(latitude);
+            }); */
+      console.log('yay from locateUser')
+    }
+    else {
+      alert('Your browser does not support geolocation.');
+    }
+  }
+
 
   onSubmit = e => {
     e.preventDefault();
-    this.getResults();
+    this.getSearchResults();
   };
 
-  async getResults() {
+  async getSearchResults() {
     // Headers
     const config = {
         headers: {
@@ -122,15 +177,25 @@ export default class Search extends Component {
                 </div>
               </div>
               <div className="form-row">
-                <div className="form-group col-md-10">
+                <div className="form-group col-md-8">
                   <label>Location</label>
                   <input 
                     type="text" 
                     className="form-control" 
                     id="location" 
                     onChange={(e) => this.locationChange(e)} 
-                    //value={this.state.searchLocation} 
+                    value={this.state.searchLocation} 
                     placeholder="Enter address, zip, etc."
+                  />
+                </div>
+                <div className="form-group col-md-2">
+                  <label>-</label>
+                  <input 
+                    type="button" 
+                    className="form-control btn btn-light" 
+                    id="locateUser" 
+                    onClick={this.locateUser} 
+                    value={'Find me!'} 
                   />
                 </div>
                 <div className="form-group col-md-2">
@@ -144,7 +209,6 @@ export default class Search extends Component {
                     aria-describedby="distanceHelp" 
                     placeholder="Near Me" 
                   />
-                  <small id="distanceHelp" className="form-text text-muted">...or simply search "Near Me"</small>
                 </div> 
               </div> 
               <button type="submit" className="btn btn-primary">Search</button>        
