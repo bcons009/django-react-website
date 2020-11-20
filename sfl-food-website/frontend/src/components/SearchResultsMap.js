@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getLocationsLL } from '../actions/locationsLL'
 import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
+import { Link } from "react-router-dom";
 
 export class SearchResultsMap extends Component {
 
@@ -93,7 +94,7 @@ export class SearchResultsMap extends Component {
                             hideSelectedLocation(null);
                         }}
                     >
-                        <h3>{this.state.selectedLocation.name}</h3>
+                        <h3> <Link to={`/Informationpage/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
                         <p>{this.state.selectedLocation.address}</p>
                     </Popup>
                 ) : <div>NULL</div>}

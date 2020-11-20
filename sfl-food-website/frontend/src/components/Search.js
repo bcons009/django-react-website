@@ -21,17 +21,32 @@ export default class Search extends Component {
       };
     
       makeApiCall = searchInput => {
-        var searchUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
-        fetch(searchUrl)
+        var searchUrl = `http://localhost:8000/api/locationsLL/`;
+        /*fetch(searchUrl)
           .then(response => {
-            //return response.json();
+           
+            //alert(JSON.stringify(response)) ;
             var jsondata = "{\"meals\": [{\"eventid\": \"52955\",\"eventName\": \"Free give away\",\"eventAddress\": \"123 Vermont St, Weston, FL\",\"eventDate\": \"12/10/2020\"},{\"eventid\": \"52355\",\"eventName\": \"YMCA Food Drive\",\"eventAddress\": \"1464 Nashville St, Miami, FL\",\"eventDate\": \"11/21/2020\"},{\"eventid\": \"555\",\"eventName\": \"Publix Food Drive\",\"eventAddress\": \"21 Baker St, Cooper city, FL\",\"eventDate\": \"10/29/2020\"}]}";
             document.getElementById("divmap").style.visibility = "visible";
             return JSON.parse(jsondata);
           })
           .then(jsonData => {
+           // alert("meaks"+meals);
+            console.log("OK",JSON.stringify(jsonData.meals));
             this.setState({ meals: jsonData.meals });
-          });
+          });*/
+          let currentComponent = this;
+          fetch(searchUrl).then(function(response) {
+            response.json().then(function(parsedJson) {
+            document.getElementById("divmap").style.visibility = "visible";
+            return parsedJson;
+              
+            })
+            .then(jsonData  => {
+              currentComponent.setState({ meals: jsonData  });
+            });
+          })
+         
       };
   render() {
     return (
@@ -59,20 +74,19 @@ export default class Search extends Component {
             <div className={styles.singleMealContainer}>
               <div className={styles.singleMealLeft}>
                 <h2>
-                  <Link to="/Informationpage"><a href="#">{meal.eventName}</a></Link>
+                  <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
                 </h2>
                 <p>
-                  Weston food drive serves everyone
-                  from low income families, single parents, senior citizens,
-                  unemployed individuals, disabled veterans
+                  {meal.description}
                 </p>
                 <p>
-                  <b>Serving </b>: anyone in need, all ages
+                  <b>Serving </b>: {meal.cost}
                 </p>
               </div>
               <div className={styles.singleMealRight}>
-                <p>11.11 miles (serves your local area)</p>
-                <a href="#">{meal.eventAddress}</a>
+                <p>{meal.email}</p>
+                <p>{meal.phone_number}</p>
+                <a href="#">{meal.address}</a>
               </div>
             </div>
            
