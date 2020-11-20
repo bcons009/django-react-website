@@ -1,18 +1,74 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getLocations } from '../actions/locations'
 //import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
 
 
 
 export default class Informationpage extends Component {
-  state = {};
+  state = {
+    meals : [],
+    schedules : []
+  };
+
+  
+
+ /* static propTypes = {
+    locations: PropTypes.array.isRequired
+}*/
+componentDidMount(props) {
+ 
+  this.makeLocationApiCall();
+  this.makeScheduleApiCall();
+}
+
+makeLocationApiCall = searchInput => {
+  var pathname = this.props.location.pathname;
+  var res = pathname.split("/");
+  var ID = res[2];
+  var searchUrl = "http://localhost:8000/api/locationsLL/"+ID+"/";
+  let currentComponent = this;
+  fetch(searchUrl).then(function(response) {
+    response.json().then(function(parsedJson) {
+    return parsedJson;
+    })
+    .then(jsonData  => {
+      currentComponent.setState({ meals: jsonData  });
+    })
+  })
+ 
+};
+
+makeScheduleApiCall = searchInput => {
+  var pathname = this.props.location.pathname;
+  var res = pathname.split("/");
+  var ID = res[2];
+  var searchUrl = "http://localhost:8000/api/schedules/"+ID+"/";
+  let currentComponent1 = this;
+  fetch(searchUrl).then(function(response) {
+    response.json().then(function(parsedJson) {
+    console.log("response",parsedJson);
+    return parsedJson;
+    })
+    .then(jsonData  => {
+      console.log("response2",JSON.stringify(jsonData));
+      currentComponent1.setState({ schedules: jsonData  });
+    })
+  })
+ 
+};
 
   render() {
     return (
-        
+     
       <div className={styles.mainDiv}>
+     
+       
+     <div>
         <div>
-          <h2 className={styles.eventHeading}>The Cupboard</h2>
+          <h2 className={styles.eventHeading}>{this.state.meals.name}</h2>
         </div>
         <div>
           <h4>
@@ -21,34 +77,7 @@ export default class Informationpage extends Component {
         </div>
         <div className={styles.programDescription}>
           <p>
-            Goodman Jewish Family Services The Cupboard is a kosher food pantry
-            that will serve those in the Jewish Community throughout Broward
-            County who have been identified as food insecure, live at or below
-            150 percent of the poverty line, and do not have the resources to
-            provide nutritional meals for themselves or their families.
-            <br />
-            At The Cupboard, our whole-person approach starts with:
-            <br />
-            -Food provision through the distribution of nutritious, kosher food
-            clients can pick from in our choice market layout
-            <br />
-            -Recipients will be able to select from kosher, non-perishable
-            staples and canned goods and fresh produce, and chicken, meat, and
-            frozen items, as available.
-            <br />
-            - Provide information regarding government benefits
-            <br />
-            To have access to this program, the potential recipient will meet
-            with a JFS professional who will perform a comprehensive evaluation
-            to assess the family’s overall needs.
-            <br />
-            The recipient will ‘shop’ during pre-arranged, scheduled
-            appointments to ensure privacy and confidentiality. The Cupboard
-            will supply critically important food items and other daily
-            necessities, as well as evaluate clients’ overall needs and arrange
-            for appropriate support services. Because dignity is of the utmost
-            concern, private one-on-one appointments will be scheduled at
-            convenient times.
+          {this.state.meals.description}
           </p>
         </div>
         <div className={styles.subHeads}>
@@ -71,42 +100,49 @@ export default class Informationpage extends Component {
         <div>
           <div className={styles.subHeads}>Jewish Family Home Care Inc</div>
           <div>
-            100 S Pine Island Rd
-            <br />
-            Plantation, FL 33324
+          {this.state.meals.address}
           </div>
           <div>
-            Phone : <a href="#">954-321-3256</a>
+            Phone : <a href="#">{this.state.meals.phone_number}</a>
             <br />
-            Email : <a href="#">info@broward.com</a>
+            Email : <a href="#">{this.state.meals.email}</a>
           </div>
         </div>
         <div className={styles.subHeads}>
           S:
-          <span>Closed</span>
+          <span>{this.state.schedules.sunday}</span>
           <br />
           M:
-          <span >8:00am - 5:00pm EST</span>
+          <span >{this.state.schedules.monday}</span>
           <br />
           T:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.tuesday}</span>
           <br />
           W:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.wednesday}</span>
           <br />
           T:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.thursday}</span>
           <br />
           F:
-          <span>8:00am - 5:00pm EST</span>
+          <span>{this.state.schedules.friday}</span>
           <br />
           S:
-          <span>Closed</span>
+          <span>{this.state.schedules.saturday}</span>
           <br />
         </div>
+        </div>
+        
+        
       </div>
-    );
+      
+      
+      );
   }
 }
+/*const mapStateToProps = state => ({
+  locations: state.locations.locations
+});*/
 
+//export default connect(mapStateToProps, { getLocations })(SearchResultsMap);
 //ReactDOM.render(<Informationpage />, document.getElementById("app"));
