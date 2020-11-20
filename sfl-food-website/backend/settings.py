@@ -109,7 +109,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'leads_DB',
-        'HOST': 'mongodb+srv://Bryan:rx4kkp3tA0hDo9Nb@cluster0.dac33.mongodb.net/leads_DB?retryWrites=true&w=majority',
+        'HOST': 'mongodb+srv://Bryan:rx4kkp3tA0hDo9Nb@cluster0.dac33.mongodb.net/<dbname>?retryWrites=true&w=majority',
         'USERNAME': 'Bryan',
         'PASSWORD': 'rx4kkp3tA0hDo9Nb',
         'authMechanism': 'SCRAM-SHA-1',
