@@ -39,6 +39,7 @@ export default class Search extends Component {
           fetch(searchUrl).then(function(response) {
             response.json().then(function(parsedJson) {
             document.getElementById("divmap").style.visibility = "visible";
+            console.log("parsedJson",parsedJson);
             return parsedJson;
               
             })
@@ -69,16 +70,19 @@ export default class Search extends Component {
             */}
             <MapDisplay />
           </div>
-          {this.state.meals.map((meal, index) => (
+          {this.state.meals.filter(meals =>meals.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || meals.description.toLowerCase().includes(this.state.searchValue.toLowerCase())).map((meal, index) => (
           <div className={styles.singleMeal} key={index}>
             <div className={styles.singleMealContainer}>
               <div className={styles.singleMealLeft}>
                 <h2>
+               
                   <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
                 </h2>
-                <p>
+                { meal.description.length<300 ?
+                (<p>
                   {meal.description}
-                </p>
+                </p>)
+                : (<p>{meal.description.substring(0, 300)}"..." <Link to={`/Informationpage/${meal.id}/`}>More</Link></p>)}
                 <p>
                   <b>Serving </b>: {meal.cost}
                 </p>
