@@ -66,7 +66,6 @@ export default class Search extends Component {
   handleOnChange = event => {
     this.setState({ searchValue: event.target.value });
   };
-
   handleSearch = () => {
     this.makeApiCall(this.state.searchValue);
   };

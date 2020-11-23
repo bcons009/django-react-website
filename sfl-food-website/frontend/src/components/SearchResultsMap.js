@@ -127,7 +127,7 @@ export class SearchResultsMap extends Component {
                             hideSelectedLocation(null);
                         }}
                     >
-                        <h3>{this.state.selectedLocation.name}</h3>
+                        <h3> <Link to={`/Informationpage/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
                         <p>{this.state.selectedLocation.address}</p>
                     </Popup>
                 ) : <div>NULL</div>}
