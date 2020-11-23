@@ -18,7 +18,9 @@ export default class Search extends Component {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(this.success);
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(this.success.bind(this));
+    }
   }
 
 
@@ -53,7 +55,7 @@ export default class Search extends Component {
       'longitude': longitude
     }
 
-    //console.log(this.state.searchDistance)
+    //console.log(state.searchDistance)
 
     const res = await axios.get('/api/revGeocode', { params: params });
     const location = res.data['location'];
