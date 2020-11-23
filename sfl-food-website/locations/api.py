@@ -1,3 +1,4 @@
+from django.core import serializers
 from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
 from rest_framework import viewsets, permissions, generics
 from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer
@@ -8,6 +9,8 @@ import json
 from geopy import distance
 
 # OrgLocation ViewSet
+
+
 class OrgLocationViewSet(viewsets.ModelViewSet):
     queryset = OrgLocation.objects.all()
     permission_classes = [
@@ -16,6 +19,8 @@ class OrgLocationViewSet(viewsets.ModelViewSet):
     serializer_class = OrgLocationSerializer
 
 # OrgSchedule ViewSet
+
+
 class OrgScheduleViewSet(viewsets.ModelViewSet):
     queryset = OrgSchedule.objects.all()
     permission_classes = [
@@ -24,6 +29,8 @@ class OrgScheduleViewSet(viewsets.ModelViewSet):
     serializer_class = OrgScheduleSerializer
 
 # OrgLocationLL ViewSet
+
+
 class OrgLocationLLViewSet(viewsets.ModelViewSet):
     queryset = OrgLocationLL.objects.all()
     permission_classes = [
@@ -34,6 +41,8 @@ class OrgLocationLLViewSet(viewsets.ModelViewSet):
 # Geocode Route for Search
 
 # UserLocation ViewSet
+
+
 class UserLocationViewSet(viewsets.ModelViewSet):
     queryset = UserLocation.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -44,29 +53,51 @@ class GeocodeAPI(generics.GenericAPIView):
     authentication_classes = []
     permission_classes = []
 
-    def post(self, request, *args, **kwargs):
+    def as_json(self, loc):
+        return dict(
+            name=loc.name,
+            address=loc.address,
+            latitude=loc.latitude,
+            longitude=loc.longitude,
+            description=loc.description,
+            cost=loc.cost,
+            website=loc.website,
+            email=loc.email,
+            phone_number=loc.phone_number,
+            last_updated_at=loc.last_updated_at,
+        )
+
+    def get(self, request, *args, **kwargs):
         queryset = OrgLocationLL.objects.all()
-        location = request.data['location']
+        location = request.query_params['location']
+        distance = int(request.query_params['distance'])
 
         # if distance == 0, then user selected 'Near Me' option, which defaults to 5 miles
-        if(request.data['distance'] != 0):
-            max_distance = int(request.data['distance'])
-            in_range = GetLocationsInRange(queryset, location, max_distance)
+        max_distance = 5
+        if(distance != 0):
+            max_distance = distance
 
-        else:
-            in_range = GetLocationsInRange(queryset, location)
+        print(max_distance)
+
+        in_range = GetLocationsInRange(queryset, location, max_distance)
 
         # convert python list to json
-        json_in_range = json.dumps(in_range)
+        #parsed = json.loads(in_range)
+        #json_in_range = json.dumps(parsed)
+        if not in_range:
+            return Response('no results')
+
+        print(in_range[0].pk)
 
         # return in_range
-        return Response(json_in_range)
+        res = [self.as_json(loc) for loc in in_range]
+        return Response(res)
 
 
 # GetLocationsInRange --- Helper Function
 # Find all locations that are within the range defined by the user
 # If "Near Me" is selected, default max_distance = 5
-def GetLocationsInRange(queryset, location, max_distance=5):
+def GetLocationsInRange(queryset, location, max_distance):
 
     # Get the coordinates of user location using positionstack API
     api_key = '2de14d5ec4835742c7b6d339ab0b4e29'
@@ -89,7 +120,8 @@ def GetLocationsInRange(queryset, location, max_distance=5):
 
         # add to in_range if in range
         if(dist <= max_distance):
-            in_range.append(loc.name)
-            print(loc.name)
+            in_range.append(loc)
+            print(loc)
 
-    return in_range
+    data = in_range
+    return data
