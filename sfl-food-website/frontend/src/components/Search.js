@@ -14,6 +14,7 @@ export default class Search extends Component {
     searchValue: "hi",
     searchLocation: "",
     searchDistance: 0,
+    userLocation: "",
     meals: []
   }
 
@@ -62,11 +63,13 @@ export default class Search extends Component {
 
 
     console.log(res.data['location']);
+    this.setState({ userLocation: location });
   }
 
-  locateUser() {
+  locateUser = e => {
     console.log('hi');
     if (navigator.geolocation) {
+      this.setState({ searchLocation: this.state.userLocation });
      /* navigator.geolocation
         .getCurrentPosition((pos) => {
           const { latitude, longitude } = pos.coords;
@@ -196,7 +199,7 @@ export default class Search extends Component {
                     type="button" 
                     className="form-control btn btn-light" 
                     id="locateUser" 
-                    onClick={this.locateUser} 
+                    onClick={e => this.locateUser(e)} 
                     value={'Find me!'} 
                   />
                 </div>
