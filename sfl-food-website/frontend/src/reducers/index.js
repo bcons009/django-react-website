@@ -5,10 +5,6 @@ import locationsLL from './locationsLL'
 import auth from './auth'
 import errors from './errors'
 import messages from './messages'
-import uLocations from './user-locations'
-import store from '../store'
-
-// store.dispatch(actions.setCsrfToken(req.csrfToken()));
 
 export default combineReducers({
     locations, 
@@ -16,6 +12,5 @@ export default combineReducers({
     locationsLL,
     auth,
 	errors,
-    messages,
-    uLocations,
+	messages
 });

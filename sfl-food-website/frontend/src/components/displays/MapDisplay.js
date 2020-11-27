@@ -7,9 +7,7 @@ export class MapDisplay extends Component {
     render() {
         return (
             <Provider store={store}>
-                <div style={{width: "100vw", height: "100vh"}}>
-                    <SearchResultsMap />
-                </div>
+                <SearchResultsMap />
             </Provider>
         )
     }
