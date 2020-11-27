@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect } from "react-router-dom";
 import { addReview } from '../actions/reviews';
+import { getULocations } from '../actions/user-locations';
 
 
 export class AddReviewForm extends Component {
@@ -17,7 +18,8 @@ export class AddReviewForm extends Component {
             description: "",
             rating: 1,
             is_loading: false,
-            onClickId: props.location.id,
+           // onClickId: props.location.id,
+            onClickId: "",
             location: "",
         }
     }
@@ -28,18 +30,18 @@ export class AddReviewForm extends Component {
     }
 
     componentDidMount(){
-        this.props.getULocations();
+       // this.props.getULocations();
         // some function that runs after getULocations that sets the state to the values
         // of each input field to the record whose ID matches the event ID passed in
 
         const { isAuthenticated } = this.props.auth;
-        if (isAuthenticated) {
+       /* if (isAuthenticated) {
             const eULocation = this.props.uLocations.find(location => location.id === this.state.onClickId);
         
             let { location } = eULocation;
             location = location.id
             this.setState({location: location});
-        }
+        }*/
     }
 
     onChange = e => this.setState({
@@ -47,7 +49,7 @@ export class AddReviewForm extends Component {
     });
 
     validateInputs = () => {
-        const { name, description,rating } = this.state;
+        const { name, description, rating } = this.state;
         if (!name || !description) {
             return false;
         }

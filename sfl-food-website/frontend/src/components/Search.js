@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 // import ReactDOM from "react-dom";
+import { connect } from 'react-redux'
 import styles from "../mystyle.module.css";
 import MapDisplay from "./displays/MapDisplay";
 import Informationpage from './Informationpage.js';
@@ -8,8 +9,10 @@ import { search } from '../actions/search';
 import axios from 'axios';
 import regeneratorRuntime from 'regenerator-runtime';
 import LinkButton from "./misc/LinkButton";
+import { getLocationsLL } from "../actions/locationsLL";
+import { getULocations } from "../actions/user-locations";
 
-export default class Search extends Component {
+export  class Search extends Component {
 
   state = {
     searchValue: "hi",
@@ -179,8 +182,8 @@ export default class Search extends Component {
                                 <LinkButton
                                     className="btn btn-primary btn-sm"
                                     to={{
-                                        pathname: `/AddReview/${location.id}`,
-                                        id: location.id,
+                                        pathname: `/AddReview/${meal.id}`,
+                                        id: meal.id,
                                     }}
                                 >
                                     Add Review
@@ -208,7 +211,12 @@ export default class Search extends Component {
   }
 }
 
-{/*ReactDOM.render(<Search />, document.getElementById("app"));*/} 
+const mapStateToProps = (state) => ({
+  locationsLL: state.locationsLL.locationsLL,
+  //uLocations: state.uLocations.uLocations,
+});
+
+export default connect(mapStateToProps,{ getLocationsLL, getULocations })( Search);
 
 
 const sstyles = {

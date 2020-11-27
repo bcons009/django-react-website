@@ -16,13 +16,6 @@ export default class AddReview extends Component {
             <div>
                 <Provider store={ store }>
                     <Router>
-                        <Fragment>
-                            <Header />
-                            <Switch>
-                                <Route exact path="/login" component={ Login } />
-                                <Route exact path="/register" component={ Register } />
-                            </Switch>
-                        </Fragment>
                         <AddReviewForm />
                     </Router> 
                 </Provider>               

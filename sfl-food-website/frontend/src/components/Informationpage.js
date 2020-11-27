@@ -1,148 +1,122 @@
-import React, { Component} from "react";
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getLocations } from '../actions/locations'
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getLocationsLL } from "../actions/locationsLL";
+import { getSchedules } from "../actions/schedules";
 //import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
 
-
-
-export default class Informationpage extends Component {
+export class Informationpage extends Component {
   state = {
-    meals : [],
-    schedules : []
+    //schedules: [],
+    ID : "",
   };
 
   
 
- /* static propTypes = {
-    locations: PropTypes.array.isRequired
-}*/
-componentDidMount(props) {
- 
-  this.makeLocationApiCall();
-  this.makeScheduleApiCall();
-}
+  static propTypes = {
+    locationsLL: PropTypes.array.isRequired
+    //schedules: PropTypes.array.isRequired,
+  };
+  componentDidMount(props) {
+    var pathname = this.props.location.pathname;
+    var res = pathname.split("/");
+    this.setState({ ID: res[2]});
+    this.props.getLocationsLL();
+    
+    this.props.getSchedules();
+  }
 
-makeLocationApiCall = searchInput => {
-  var pathname = this.props.location.pathname;
-  var res = pathname.split("/");
-  var ID = res[2];
-  var searchUrl = "http://localhost:8000/api/locationsLL/"+ID+"/";
-  let currentComponent = this;
-  fetch(searchUrl).then(function(response) {
-    response.json().then(function(parsedJson) {
-    return parsedJson;
-    })
-    .then(jsonData  => {
-      currentComponent.setState({ meals: jsonData  });
-    })
-  })
- 
-};
 
-makeScheduleApiCall = searchInput => {
-  var pathname = this.props.location.pathname;
-  var res = pathname.split("/");
-  var ID = res[2];
-  var searchUrl = "http://localhost:8000/api/schedules/"+ID+"/";
-  let currentComponent1 = this;
-  fetch(searchUrl).then(function(response) {
-    response.json().then(function(parsedJson) {
-    console.log("response",parsedJson);
-    return parsedJson;
-    })
-    .then(jsonData  => {
-      console.log("response2",JSON.stringify(jsonData));
-      currentComponent1.setState({ schedules: jsonData  });
-    })
-  })
- 
-};
 
   render() {
     return (
-     
-      <div className={styles.mainDiv}>
-     
-       
-     <div>
-        <div>
-          <h2 className={styles.eventHeading}>{this.state.meals.name}</h2>
-        </div>
-        <div>
-          <h4>
-            by &nbsp; <a href="#">Goodman Jewish Family Services</a>
-          </h4>
-        </div>
-        <div className={styles.programDescription}>
-          <p>
-          {this.state.meals.description}
-          </p>
-        </div>
-        <div className={styles.subHeads}>
-          <h5>
-            <i className={styles.helo}></i>
-            <span data-translate="Services this program provides:">
-              Services this program provides:
-            </span>
-          </h5>
-          <ul className={styles.listInline}>
-            <li>free food drive</li>
-            <li>free grocery</li>
-          </ul>
-          <div>
-            <span>Coverage Area: </span>
-            This food drive is for Broward Community
-          </div>
-        </div>
+      <Fragment>
+      <div>
+      {this.props.locationsLL ? (
+        <div className={styles.mainDiv}>
+        {this.props.locationsLL.filter(locationsLL =>locationsLL.id == (this.state.ID)).map((location, index) => (
+          <div key={index}>
+            <div>
+              <h2 className={styles.eventHeading}>{location.name}</h2>
+            </div>
+            <div>
+              <h4>
+                by &nbsp; <a href="#">Goodman Jewish Family Services</a>
+              </h4>
+            </div>
+            <div className={styles.programDescription}>
+              <p>{location.description}</p>
+            </div>
+            <div className={styles.subHeads}>
+              <h5>
+                <i className={styles.helo}></i>
+                <span data-translate="Services this program provides:">
+                  Services this program provides:
+                </span>
+              </h5>
+              <ul className={styles.listInline}>
+                <li>free food drive</li>
+                <li>free grocery</li>
+              </ul>
+              <div>
+                <span>Coverage Area: </span>
+                This food drive is for Broward Community
+              </div>
+            </div>
 
-        <div>
-          <div className={styles.subHeads}>Jewish Family Home Care Inc</div>
-          <div>
-          {this.state.meals.address}
+            <div>
+              <div className={styles.subHeads}>Jewish Family Home Care Inc</div>
+              <div>{location.address}</div>
+              <div>
+                Phone : <a href="#">{location.phone_number}</a>
+                <br />
+                Email : <a href="#">{location.email}</a>
+              </div>
+            </div>
+            <div>
+            {this.props.schedules && this.props.schedules.filter(
+              schedule => schedule.location == (this.state.ID)).map(schedule => (
+            <div className={styles.subHeads} key={index} >
+              S:
+              <span>{schedule.sunday}</span>
+              <br />
+              M:
+              <span>{schedule.monday}</span>
+              <br />
+              T:
+              <span>{schedule.tuesday}</span>
+              <br />
+              W:
+              <span>{schedule.wednesday}</span>
+              <br />
+              T:
+              <span>{schedule.thursday}</span>
+              <br />
+              F:
+              <span>{schedule.friday}</span>
+              <br />
+              S:
+              <span>{schedule.saturday}</span>
+              <br />
+            </div>
+            ))}
+            </div>
+            </div>
+          ))}
           </div>
-          <div>
-            Phone : <a href="#">{this.state.meals.phone_number}</a>
-            <br />
-            Email : <a href="#">{this.state.meals.email}</a>
-          </div>
-        </div>
-        <div className={styles.subHeads}>
-          S:
-          <span>{this.state.schedules.sunday}</span>
-          <br />
-          M:
-          <span >{this.state.schedules.monday}</span>
-          <br />
-          T:
-          <span>{this.state.schedules.tuesday}</span>
-          <br />
-          W:
-          <span>{this.state.schedules.wednesday}</span>
-          <br />
-          T:
-          <span>{this.state.schedules.thursday}</span>
-          <br />
-          F:
-          <span>{this.state.schedules.friday}</span>
-          <br />
-          S:
-          <span>{this.state.schedules.saturday}</span>
-          <br />
-        </div>
-        </div>
-        
-        
+          ): (
+            <p>Try searching for a event</p>
+          )}
       </div>
-      
-      
-      );
+      </Fragment>
+    );
   }
 }
-/*const mapStateToProps = state => ({
-  locations: state.locations.locations
-});*/
+const mapStateToProps = (state) => ({
+  locationsLL: state.locationsLL.locationsLL,
+  schedules: state.schedules.locations
+});
 
-//export default connect(mapStateToProps, { getLocations })(SearchResultsMap);
+export default connect(mapStateToProps, { getLocationsLL, getSchedules })(Informationpage);
 //ReactDOM.render(<Informationpage />, document.getElementById("app"));
