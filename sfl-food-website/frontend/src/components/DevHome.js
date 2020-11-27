@@ -42,6 +42,12 @@ export class DevHome extends Component {
                     >
                         View Events Created by Logged-in User (Bryan)
                     </Link>
+                    <br/>
+                    <Link
+                        to='/AddReview'
+                    >
+                        AddReviewPage (Maimuna)
+                    </Link>
                 </form>
             </div>
         )
