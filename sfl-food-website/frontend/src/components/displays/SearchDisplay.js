@@ -7,7 +7,7 @@ export class SearchDisplay extends Component {
     render() {
         return (
             <Provider store={store}>
-                <Search />
+                <Search location={this.props.location} />
             </Provider>
         )
     }

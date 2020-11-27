@@ -7,7 +7,7 @@ export class InformationpageDisplay extends Component {
     render() {
         return (
             <Provider store={store}>
-                <Informationpage />
+                <Informationpage location={this.props.location} />
             </Provider>
         )
     }
