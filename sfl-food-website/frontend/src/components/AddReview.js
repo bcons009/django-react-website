@@ -10,7 +10,7 @@ import Header from './layout/Header';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
 
-export default class AddEventPage extends Component {
+export default class AddReview extends Component {
     render() {
         return (
             <div>

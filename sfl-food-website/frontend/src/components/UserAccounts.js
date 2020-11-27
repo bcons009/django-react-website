@@ -14,11 +14,11 @@ import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
 import AddEventForm from './user-events/AddEventForm'
 import Informationpage from "./Informationpage";
+import AddReview from './AddReview'
 import ViewYourEvents from './user-events/ViewYourEvents';
 import EditEventForm from './user-events/EditEventForm'
 
 import history from './history';
-import  AddReview  from './AddReviewForm';
 
 export default class UserAccounts extends Component {
     render() {
@@ -40,6 +40,7 @@ export default class UserAccounts extends Component {
 							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
 							<Route path="/EditEventForm/:id" component={EditEventForm} />
 							<Route path="/AddReview" component={AddReview} />
+							
 		            	</Switch>
 		            </Fragment>
 		        </Router> 

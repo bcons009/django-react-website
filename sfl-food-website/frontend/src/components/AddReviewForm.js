@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect } from "react-router-dom";
-//import RatingComponent from '@cogent-labs/react-rating-component';
+//import { addReview } from '../actions/reviews';
 
 
-export  class AddReviewForm extends Component {
+export class AddReviewForm extends Component {
 
     constructor(props) {
         super(props);
@@ -15,158 +15,135 @@ export  class AddReviewForm extends Component {
             user: "",
             name: "",
             description: "",
-            rating: 1,
-            
-        }
-    }
-
-    onChange = e => this.setState({
-        [e.target.name]: e.target.value
-    });
-
-    validateInputs = () => {
-        const { name, description, rating } = this.state;
-        if (!name || !description || !rating) {
-            return false;
-        }
-        else {
-            return true;
+            rating: "",
         }
     }
 
     static propTypes = {
         auth: PropTypes.object.isRequired,
+        addReview: PropTypes.func.isRequired
     }
 
+      onChange = e => this.setState({
+        [e.target.name]: e.target.value
+    });
+   
+    render() {
+        const { isAuthenticated } = this.props.auth;
+        const { name, description,rating } = this.state;   
 
-    onSubmit = e => {
-        e.preventDefault();
+        const toggleHover = () => {
+            this.setState({hover: !this.state.hover})
 
-        if (this.validateInputs()) {
-            this.setState({is_loading: true});
-            this.setState({hover: false});
-
-            let { user } = this.props.auth;
-            user = user.id
-            this.setState({user: user});
-        }
-        else {
-            alert("Please make sure to fill out all fields before submitting.");
-        }            
-    }
-    onStarClick(nextValue, prevValue, name) {
-        this.setState({rating: nextValue});
-      }  
-
-   render() {
-    const { isAuthenticated } = this.props.auth;
-    const { name, description,rating } = this.state;   
-
-    const toggleHover = () => {
-        this.setState({hover: !this.state.hover})
-
-        if (this.state.hover) {
-            styles.submitStyle = {
-                width: "100%",
-                margin: "0 auto 30px",
-                borderColor: "#4286f4",
-                color: "white",
-                backgroundColor: "#4286f4",
-                transition: "color 0.3s, background-color 0.3s"
+            if (this.state.hover) {
+                styles.submitStyle = {
+                    width: "100%",
+                    margin: "0 auto 30px",
+                    borderColor: "#4286f4",
+                    color: "white",
+                    backgroundColor: "#4286f4",
+                    transition: "color 0.3s, background-color 0.3s"
+                }
+            }
+            else {
+                styles.submitStyle = {
+                    width: "100%",
+                    margin: "0 auto 30px",
+                    borderColor: "#4286f4",
+                    color: "#4286f4",
+                    backgroundColor: "white",
+                    transition: "color 0.3s, background-color 0.3s"
+                }
             }
         }
-        else {
-            styles.submitStyle = {
-                width: "100%",
-                margin: "0 auto 30px",
-                borderColor: "#4286f4",
-                color: "#4286f4",
-                backgroundColor: "white",
-                transition: "color 0.3s, background-color 0.3s"
-            }
-        }
-    }
 
-    let submitButton = this.state.is_loading ? (
-        <div className="d-flex justify-content-center">
-            <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
+        let submitButton = this.state.is_loading ? (
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
-        </div>
-    ) : (
-        <input 
-            type="submit" 
-            value="Submit"
-            style={styles.submitStyle}
-            onMouseEnter={toggleHover} 
-            onMouseLeave={toggleHover}
-        />
-    );
+        ) : (
+            <input 
+                type="submit" 
+                value="Submit"
+                style={styles.submitStyle}
+                onMouseEnter={toggleHover} 
+                onMouseLeave={toggleHover}
+            />
+        );
 
 
-    const loggedIn = (
-        <div style={styles.outerDivStyle}>
-            <form style={styles.formStyle} onSubmit={this.onSubmit}>
-                <label style={styles.labelStyle}>
-                    <h1 style={styles.headerStyle}>Add Review</h1>
-                </label>
-                <label style={styles.labelStyle}>
-                    Review Title:
-                    <br />
-                    <input 
-                        type="text" 
-                        name="name" 
-                        maxLength="100" 
-                        style={styles.inputStyle}
-                        value={name}
-                        onChange={this.onChange}
-                        required
-                    />
-                    <br />
-                </label>
-                <label style={styles.labelStyle}>
-                    Review:
-                    <br />
-                    <textarea 
-                        name="description" 
-                        rows="8" 
-                        cols="55"
-                        style={styles.descriptionStyle}
-                        value={description}
-                        onChange={this.onChange}
-                        required
-                    />
-                    <br />
-                </label>/*
-               <label style={styles.labelStyle}>
-               Rating
-               </label>
-                <label style={styles.bottomLabelStyle}>
-                    {submitButton}
-                </label>
-            </form>
-        </div>
-    );
+        const loggedIn = (
+            <div style={styles.outerDivStyle}>
+                <form style={styles.formStyle} onSubmit={this.onSubmit}>
+                    <label style={styles.labelStyle}>
+                        <h1 style={styles.headerStyle}>Add Review</h1>
+                    </label>
+                    <label style={styles.labelStyle}>
+                        Review Title:
+                        <br />
+                        <input 
+                            type="text" 
+                            name="name" 
+                            maxLength="100" 
+                            style={styles.inputStyle}
+                            value={name}
+                            onChange={this.onChange}
+                            required
+                        />
+                        <br />
+                    </label>
+                   <label style={styles.labelStyle}>
+                        Review description:
+                        <br />
+                        <textarea 
+                            name="description" 
+                            rows="8" 
+                            cols="55"
+                            style={styles.descriptionStyle}
+                            value={description}
+                            onChange={this.onChange}
+                            required
+                        />
+                        <br />
+                        
+                        <br />
+                    </label>
+                    <label style={styles.labelStyle}>
+                        Rating:
+                        <select 
+                            value={this.state.selectValue} 
+                            onChange={this.onChange} 
+                        >
+                        <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <br />
+                            
+                        <br />
+                    </label>
+                    <label style={styles.bottomLabelStyle}>
+                        {submitButton}
+                    </label>
+                </form>
+            </div>
+        );
 
-    /*
-    <RatingComponent
-                    name="rate1"
-                    starCount={5}
-                    value={rating}
-                    onStarClick={this.onStarClick.bind(this)}
-               />
-    */ 
+        const notLoggedIn = (
+            <Redirect to='/login' />
+        );
 
-    const notLoggedIn = (
-        <Redirect to='/login' />
-    );
+        return (
+            <div>
+                { isAuthenticated ? loggedIn : notLoggedIn }
+            </div>            
+        )
+    }
 
-    return (
-        <div>
-            { isAuthenticated ? loggedIn : notLoggedIn }
-        </div>            
-    )
-}
 }
 
 const styles = {
@@ -250,4 +227,5 @@ const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
 
+//export default connect(mapStateToProps, {addReview})(AddReviewForm);
 export default connect(mapStateToProps)(AddReviewForm);
