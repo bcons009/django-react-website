@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { search } from '../actions/search';
 import axios from 'axios';
 import regeneratorRuntime from 'regenerator-runtime';
+import LinkButton from "./misc/LinkButton";
 
 export default class Search extends Component {
 
@@ -174,7 +175,7 @@ export default class Search extends Component {
                       <p>
                         <b>Serving </b>: {meal.cost}
                       </p>
-                      <div style={styles.buttonDivStyle}>
+                      <div style={sstyles.buttonDivStyle}>
                                 <LinkButton
                                     className="btn btn-primary btn-sm"
                                     to={{
@@ -210,7 +211,7 @@ export default class Search extends Component {
 {/*ReactDOM.render(<Search />, document.getElementById("app"));*/} 
 
 
-const styles = {
+const sstyles = {
   outerDivStyle: {
       width: "60%",
       height: "90%",
