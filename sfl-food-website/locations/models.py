@@ -24,6 +24,16 @@ class OrgLocation(models.Model):
         # tags
         # photos (Google Maps Places API)
 
+class OrgReview(models.Model):
+    location = models.ForeignKey(
+        OrgLocation,
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=100)
+    star = models.FloatField()
+    description = models.CharField(max_length=2000)
+    last_updated_at = models.DateTimeField(auto_now=True)
+
 class OrgLocationLL(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=250)
