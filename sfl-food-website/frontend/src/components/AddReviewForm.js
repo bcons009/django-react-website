@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect } from "react-router-dom";
-//import { addReview } from '../actions/reviews';
+import { addReview } from '../actions/reviews';
 
 
 export class AddReviewForm extends Component {
@@ -15,7 +15,10 @@ export class AddReviewForm extends Component {
             user: "",
             name: "",
             description: "",
-            rating: "",
+            rating: 1,
+            is_loading: false,
+            onClickId: props.location.id,
+            location: "",
         }
     }
 
@@ -24,9 +27,62 @@ export class AddReviewForm extends Component {
         addReview: PropTypes.func.isRequired
     }
 
-      onChange = e => this.setState({
+    componentDidMount(){
+        this.props.getULocations();
+        // some function that runs after getULocations that sets the state to the values
+        // of each input field to the record whose ID matches the event ID passed in
+
+        const { isAuthenticated } = this.props.auth;
+        if (isAuthenticated) {
+            const eULocation = this.props.uLocations.find(location => location.id === this.state.onClickId);
+        
+            let { location } = eULocation;
+            location = location.id
+            this.setState({location: location});
+        }
+    }
+
+    onChange = e => this.setState({
         [e.target.name]: e.target.value
     });
+
+    validateInputs = () => {
+        const { name, description,rating } = this.state;
+        if (!name || !description) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    onSubmit = e => {
+        e.preventDefault();
+
+        if (this.validateInputs()) {
+            this.setState({is_loading: true});
+            this.setState({hover: false});
+
+            let { user } = this.props.auth;
+            user = user.id
+            this.setState({user: user});
+
+
+            const aReview = { user,  description, rating };
+            
+            this.props.addReview(aReview, this.state.onClickId);
+            console.log(aReview);
+
+            alert("Event has been successfully updated!");
+
+                // redirect
+            window.location.href = '#';
+                  
+        }
+        else {
+            alert("Please make sure to fill out all fields before submitting.");
+        }            
+    }
    
     render() {
         const { isAuthenticated } = this.props.auth;
@@ -113,7 +169,7 @@ export class AddReviewForm extends Component {
                     <label style={styles.labelStyle}>
                         Rating:
                         <select 
-                            value={this.state.selectValue} 
+                            value={rating} 
                             onChange={this.onChange} 
                         >
                         <option value="1">1</option>
@@ -227,5 +283,5 @@ const mapStateToProps = (state) => ({
 	auth: state.auth,
 });
 
-//export default connect(mapStateToProps, {addReview})(AddReviewForm);
-export default connect(mapStateToProps)(AddReviewForm);
+export default connect(mapStateToProps, {addReview})(AddReviewForm);
+//export default connect(mapStateToProps)(AddReviewForm);
