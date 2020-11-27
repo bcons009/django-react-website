@@ -1,64 +1,35 @@
 import React, { Component} from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getLocations } from '../actions/locations'
+import { getLocationsLLID } from '../actions/locationsLL'
 //import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
 
 
 
-export default class Informationpage extends Component {
+export  class Informationpage extends Component {
   state = {
     meals : [],
     schedules : []
   };
 
   
-
- /* static propTypes = {
+ static propTypes = {
     locations: PropTypes.array.isRequired
-}*/
+}
 componentDidMount(props) {
- 
-  this.makeLocationApiCall();
-  this.makeScheduleApiCall();
+  console.log("this.props.location","Hello");
+  var pathname = this.props.location.pathname;
+  var res = pathname.split("/");
+  var ID = res[2];
+  console.log("ID",ID);
+  this.props.getLocationsLLID(ID);
+ console.log("this.props.locations",this.props.locations);
+  //this.makeLocationApiCall();
+ // this.makeScheduleApiCall();
 }
 
-makeLocationApiCall = searchInput => {
-  var pathname = this.props.location.pathname;
-  var res = pathname.split("/");
-  var ID = res[2];
-  var searchUrl = "http://localhost:8000/api/locationsLL/"+ID+"/";
-  let currentComponent = this;
-  fetch(searchUrl).then(function(response) {
-    response.json().then(function(parsedJson) {
-    return parsedJson;
-    })
-    .then(jsonData  => {
-      currentComponent.setState({ meals: jsonData  });
-    })
-  })
- 
-};
 
-makeScheduleApiCall = searchInput => {
-  var pathname = this.props.location.pathname;
-  var res = pathname.split("/");
-  var ID = res[2];
-  var searchUrl = "http://localhost:8000/api/schedules/"+ID+"/";
-  let currentComponent1 = this;
-  fetch(searchUrl).then(function(response) {
-    response.json().then(function(parsedJson) {
-    console.log("response",parsedJson);
-    return parsedJson;
-    })
-    .then(jsonData  => {
-      console.log("response2",JSON.stringify(jsonData));
-      currentComponent1.setState({ schedules: jsonData  });
-    })
-  })
- 
-};
 
   render() {
     return (
@@ -68,7 +39,7 @@ makeScheduleApiCall = searchInput => {
        
      <div>
         <div>
-          <h2 className={styles.eventHeading}>{this.state.meals.name}</h2>
+          <h2 className={styles.eventHeading}>{this.props.locations.name}</h2>
         </div>
         <div>
           <h4>
@@ -77,7 +48,7 @@ makeScheduleApiCall = searchInput => {
         </div>
         <div className={styles.programDescription}>
           <p>
-          {this.state.meals.description}
+          {this.props.locations.description}
           </p>
         </div>
         <div className={styles.subHeads}>
@@ -100,35 +71,35 @@ makeScheduleApiCall = searchInput => {
         <div>
           <div className={styles.subHeads}>Jewish Family Home Care Inc</div>
           <div>
-          {this.state.meals.address}
+          {this.props.locations.address}
           </div>
           <div>
-            Phone : <a href="#">{this.state.meals.phone_number}</a>
+            Phone : <a href="#">{this.props.locations.phone_number}</a>
             <br />
-            Email : <a href="#">{this.state.meals.email}</a>
+            Email : <a href="#">{this.props.locations.email}</a>
           </div>
         </div>
         <div className={styles.subHeads}>
           S:
-          <span>{this.state.schedules.sunday}</span>
+          <span></span>
           <br />
           M:
-          <span >{this.state.schedules.monday}</span>
+          <span ></span>
           <br />
           T:
-          <span>{this.state.schedules.tuesday}</span>
+          <span></span>
           <br />
           W:
-          <span>{this.state.schedules.wednesday}</span>
+          <span></span>
           <br />
           T:
-          <span>{this.state.schedules.thursday}</span>
+          <span></span>
           <br />
           F:
-          <span>{this.state.schedules.friday}</span>
+          <span></span>
           <br />
           S:
-          <span>{this.state.schedules.saturday}</span>
+          <span></span>
           <br />
         </div>
         </div>
@@ -140,9 +111,9 @@ makeScheduleApiCall = searchInput => {
       );
   }
 }
-/*const mapStateToProps = state => ({
-  locations: state.locations.locations
-});*/
+const mapStateToProps = state => ({
+  //locations: state.locations.locations
+});
 
-//export default connect(mapStateToProps, { getLocations })(SearchResultsMap);
+export default connect(mapStateToProps, { getLocationsLLID })(Informationpage);
 //ReactDOM.render(<Informationpage />, document.getElementById("app"));
