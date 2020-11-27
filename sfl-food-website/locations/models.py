@@ -23,12 +23,13 @@ class OrgLocation(models.Model):
         # reviews
         # tags
         # photos (Google Maps Places API)
-
+DEFAULT_USER_ID = 18
 class OrgReview(models.Model):
     location = models.ForeignKey(
         OrgLocation,
         on_delete=models.CASCADE
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_USER_ID)
     name = models.CharField(max_length=100)
     star = models.FloatField()
     description = models.CharField(max_length=2000)
