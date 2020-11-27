@@ -24,21 +24,6 @@ class OrgLocation(models.Model):
         # tags
         # photos (Google Maps Places API)
 
-class OrgSchedule(models.Model):
-    location = models.OneToOneField(
-        OrgLocation,
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-    sunday = models.CharField(max_length=30)
-    monday = models.CharField(max_length=30)
-    tuesday = models.CharField(max_length=30)
-    wednesday = models.CharField(max_length=30)
-    thursday = models.CharField(max_length=30)
-    friday = models.CharField(max_length=30)
-    saturday = models.CharField(max_length=30)
-    last_updated_at = models.DateTimeField(auto_now=True)
-
 class OrgLocationLL(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=250)
@@ -58,6 +43,21 @@ class OrgLocationLL(models.Model):
         # tags
         # photos (Google Maps Places API)
 
+class OrgSchedule(models.Model):
+    location = models.OneToOneField(
+        OrgLocationLL,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    sunday = models.CharField(max_length=30)
+    monday = models.CharField(max_length=30)
+    tuesday = models.CharField(max_length=30)
+    wednesday = models.CharField(max_length=30)
+    thursday = models.CharField(max_length=30)
+    friday = models.CharField(max_length=30)
+    saturday = models.CharField(max_length=30)
+    last_updated_at = models.DateTimeField(auto_now=True)
+
 class UserLocation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -65,8 +65,10 @@ class UserLocation(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     description = models.CharField(max_length=2000)
-    # date field
-    # time field
+    tags = models.CharField(max_length=2000, default='')
+    date = models.DateField(default='2020-01-01')
+    start_time = models.TimeField(default='00:00')
+    end_time = models.TimeField(default='00:00')
     email = models.EmailField(max_length=100)
     phone_number = models.CharField(max_length=14)
     last_updated_at = models.DateTimeField(auto_now=True)

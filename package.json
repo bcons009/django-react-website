@@ -41,7 +41,8 @@
     "react-tag-input": "^6.4.3",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "regenerator-runtime": "^0.13.7"
   },
   "browserslist": {
     "production": [
