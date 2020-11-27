@@ -174,11 +174,24 @@ export default class Search extends Component {
                       <p>
                         <b>Serving </b>: {meal.cost}
                       </p>
+                      <div style={styles.buttonDivStyle}>
+                                <LinkButton
+                                    className="btn btn-primary btn-sm"
+                                    to={{
+                                        pathname: `/AddReview/${location.id}`,
+                                        id: location.id,
+                                    }}
+                                >
+                                    Add Review
+                                </LinkButton>
+                            </div>                            
+                        
                     </div>
                     <div className={styles.singleMealRight}>
                       <p>{meal.email}</p>
                       <p>{meal.phone_number}</p>
                       <a href="#">{meal.address}</a>
+
                     </div>
                   </div>
                  
@@ -195,3 +208,81 @@ export default class Search extends Component {
 }
 
 {/*ReactDOM.render(<Search />, document.getElementById("app"));*/} 
+
+
+const styles = {
+  outerDivStyle: {
+      width: "60%",
+      height: "90%",
+      margin: "50px auto",
+      backgroundColor: "#F5F5F5",
+      border: "3px solid #4286f4",
+      borderRadius: "10px"
+  },
+  formStyle: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: "100%",
+      justifyContent: "space-evenly",
+      alignItems: "center"
+  },
+  labelStyle: {
+      width: "60%",
+      height: "100%",
+      margin: "30px auto 0px",
+      fontSize: "1.2em"
+  },
+  bottomLabelStyle: {
+      width: "60%",
+      height: "100%",
+      margin: "30px auto"
+  },
+  inputStyle: {
+      margin: "10px 0",
+      width: "100%"
+  },
+  descriptionStyle: {
+      margin: "10px 0",
+      width: "100%",
+      resize: "none"
+  },
+  timeDivStyle: {
+      display: "flex",
+      justifyContent: "space-between",
+      margin: "10px 0 0",
+  },
+  startTimeDivStyle: {
+      width: "90%",
+      margin: "0 10px 0 0",
+      fontSize: "0.8em"
+  },
+  endTimeDivStyle: {
+      width: "90%",
+      margin: "0 0 0 10px",
+      fontSize: "0.8em"
+  },
+  timeStyle: {
+      width: "100%",
+      margin: "0"
+  },
+  submitStyle: {
+      width: "100%",
+      margin: "0 auto 30px",
+      borderColor: "#4286f4",
+      color: "white",
+      backgroundColor: "#4286f4",
+      transition: "color 0.3s, background-color 0.3s"
+  },
+  headerStyle: {
+      margin: "0"
+  },
+  addressDivStyle: {
+      fontSize: "0.8em"
+  },
+  stateDivStyle: {
+      fontSize: "1.2em",
+      fontWeight: "bold",
+      margin: "10px 0"
+  },
+}
