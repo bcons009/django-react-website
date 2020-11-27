@@ -8,9 +8,8 @@ import LocationsDisplay from "./displays/LocationsDisplay";
 import UserAccounts from './UserAccounts';
 import AddEventPage from './user-events/AddEventPage'
 import Informationpage from "./Informationpage";
-import AddReview from "./AddReview";
-import history from './history';
 
+import history from './history';
 
 
 export default class Routes extends Component {
@@ -26,7 +25,6 @@ export default class Routes extends Component {
                     <Route path="/UserAccounts" component={UserAccounts} />
                     <Route path="/AddEventPage" component={AddEventPage} />
                     <Route path="/Informationpage" exact component={Informationpage} />
-                    <Route path="/AddReview" exact component={AddReview} />
                 </Switch>
             </Router>
         )

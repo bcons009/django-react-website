@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Redirect } from "react-router-dom";
 import StarRatings from "react-star-ratings";
+import { WithContext as ReactTags } from 'react-tag-input';
 
 export class AddReview extends Component {
 

@@ -52,7 +52,7 @@ export default class Search extends Component {
     //console.log(this.state.searchDistance)
 
     const res = await axios.get('/api/geocode', { params: params });
-    console.log(res.data);
+    //console.log(res.data);
     if(res.data === 'no results'){
       alert('No results. Please try again.');
     }
@@ -168,14 +168,9 @@ export default class Search extends Component {
                       <h2>
                         <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
                       </h2>
-                      { meal.description<300 ? 
-                      ( <p>
+                      <p>
                         {meal.description}
-                      </p> )
-                      : (<p>{meal.description.substring(0,300)}"..." 
-                      <Link to={`/Informationpage/${meal.id}/`}>More</Link>
                       </p>
-                      )}
                       <p>
                         <b>Serving </b>: {meal.cost}
                       </p>
@@ -184,9 +179,6 @@ export default class Search extends Component {
                       <p>{meal.email}</p>
                       <p>{meal.phone_number}</p>
                       <a href="#">{meal.address}</a>
-                      <button  className="btn btn-primary">
-                        <Link to= {`/addReview/${meal.id}`}>Add Review</Link>
-                      </button>
                     </div>
                   </div>
                  
