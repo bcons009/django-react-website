@@ -4,7 +4,7 @@ import {ADD_L_REVIEW,GET_L_REVIEW} from './types';
 // Add Reviews
 export const addReview = (lReview) => dispatch => {
     axios
-        .post('/api/reviews/', lReview)
+        .post('/api/postReviews/', lReview)
         .then(res => {
             dispatch({
                 type: ADD_L_REVIEW,
