@@ -19,7 +19,7 @@ export class Header extends Component {
 			 		<strong>
 			 			{ user ? `Welcome ${user.username}` : `` }
 			 		</strong>
-			 	</span>																																															
+			 	</span>
             	<li className="nav-item">
             		<button onClick={this.props.logout} className="nav-link btn btn-info btn-sm text-light">Logout</button>
             	</li>
@@ -52,8 +52,8 @@ export class Header extends Component {
 		            <span className="navbar-toggler-icon" />
 		          </button>
 		          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-		            <a className="navbar-brand">
-					<Link to = "/" className="nav-link"> South Florida Free Food </Link>
+		            <a className="navbar-brand" href="#">
+		              South Florida Free Food
 		            </a>
 		          </div>
 		          { isAuthenticated ? authLinks : guestLinks }

@@ -5,21 +5,39 @@ import { Provider } from 'react-redux';
 import store from '../store';
 
 import Header from './layout/Header';
-
 import Login from './accounts/Login';
 import Register from './accounts/Register';
 
+import DevHome from "./DevHome";
+import Search from "./Search";
+import MapDisplay from "./displays/MapDisplay";
+import LocationsDisplay from "./displays/LocationsDisplay";
+import AddEventForm from './user-events/AddEventForm'
+import Informationpage from "./Informationpage";
+import ViewYourEvents from './user-events/ViewYourEvents';
+import EditEventForm from './user-events/EditEventForm'
+
+import history from './history';
 
 export default class UserAccounts extends Component {
     render() {
         return (
         	<Provider store={ store }>
-		        <Router>
+		        <Router history={history}>
 		            <Fragment>
 		        		<Header />
 		            	<Switch>
 		            		<Route exact path="/login" component={ Login } />
 		             		<Route exact path="/register" component={ Register } />
+							<Route path="/" exact component={DevHome} />
+							<Route path="/Search" exact component={Search} />
+							<Route path="/Map" component={MapDisplay} />
+							<Route path="/Locations" component={LocationsDisplay} />
+							<Route path="/UserAccounts" component={UserAccounts} />
+							<Route path="/AddEventPage" component={AddEventForm} />
+							<Route path="/Informationpage" exact component={Informationpage} />
+							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
+							<Route path="/EditEventForm/:id" component={EditEventForm} />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 

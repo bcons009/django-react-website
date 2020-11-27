@@ -2,23 +2,24 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getLocations, deleteLocation } from '../actions/locations'
+import { getLocationsLL} from '../actions/locationsLL'
 import { getSchedules } from '../actions/schedules'
 
 export class Locations extends Component {
 
     static propTypes = {
-        locations: PropTypes.array.isRequired
+        locationsLL: PropTypes.array.isRequired
     }
 
     componentDidMount() {
-        this.props.getLocations();
+        this.props.getLocationsLL();
         this.props.getSchedules();
     }
 
     render() {
         return (
             <Fragment>
-                <h2>Locations test</h2>
+                <h2>locationsLL test</h2>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -35,7 +36,7 @@ export class Locations extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.props.locations.map(location => (
+                        { this.props.locationsLL.map(location => (
                             <tr key={location.id}>
                                 <td>{location.name}</td>
                                 <td>{location.address}</td>
@@ -73,9 +74,9 @@ export class Locations extends Component {
 }
 
 const mapStateToProps = state => ({
-    locations: state.locations.locations,
+    locationsLL: state.locationsLL.locationsLL,
     // 1st locations = reducer
     schedules: state.schedules.locations
 });
 
-export default connect(mapStateToProps, { getLocations, deleteLocation, getSchedules })(Locations);
+export default connect(mapStateToProps, { getLocations, deleteLocation, getSchedules, getLocationsLL })(Locations);

@@ -16,7 +16,7 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 let tags = "|";
 
-export class AddEventForm extends Component {
+export class AddReview extends Component {
     constructor(props) {
         super(props);
 
