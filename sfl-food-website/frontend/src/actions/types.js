@@ -8,9 +8,10 @@ export const GET_U_LOCATIONS  = "GET_U_LOCATIONS";
 export const DELETE_U_LOCATION = "DELETE_U_LOCATION";
 export const EDIT_U_LOCATION  = "EDIT_U_LOCATION";
 
-export const ADD_L_REVIEW  = "AADD_L_REVIEW";
-
 export const GET_SEARCH_RESULTS = "GET_SEARCH_RESULTS";
+
+export const ADD_L_REVIEW  = "ADD_L_REVIEW";
+export const GET_L_REVIEW  = "GET_L_REVIEW";
 
 export const GET_ERRORS = 'GET_ERRORS';
 export const CREATE_MESSAGE = 'CREATE_MESSAGE';
