@@ -15,7 +15,7 @@ export class AddReviewForm extends Component {
             hover: false,
             user: "",
             name: "",
-            description: "",
+            review: "",
             rating: 1,
             is_loading: false,
            // onClickId: props.location.id,
@@ -49,8 +49,8 @@ export class AddReviewForm extends Component {
     });
 
     validateInputs = () => {
-        const { name, description, rating } = this.state;
-        if (!name || !description) {
+        const { name, review, rating } = this.state;
+        if (!name || !review) {
             return false;
         }
         else {
@@ -70,7 +70,7 @@ export class AddReviewForm extends Component {
             this.setState({user: user});
 
 
-            const aReview = { user,  description, rating };
+            const aReview = { user,  review, rating };
             
             this.props.addReview(aReview, this.state.onClickId);
             console.log(aReview);
@@ -88,7 +88,7 @@ export class AddReviewForm extends Component {
    
     render() {
         const { isAuthenticated } = this.props.auth;
-        const { name, description,rating } = this.state;   
+        const { name, review,rating } = this.state;   
 
         const toggleHover = () => {
             this.setState({hover: !this.state.hover})
@@ -160,7 +160,7 @@ export class AddReviewForm extends Component {
                             rows="8" 
                             cols="55"
                             style={styles.descriptionStyle}
-                            value={description}
+                            value={review}
                             onChange={this.onChange}
                             required
                         />
