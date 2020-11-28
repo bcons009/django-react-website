@@ -55,6 +55,12 @@ export const login = (username, password) => (dispatch) => {
       });
     })
     .catch((err) => {
+      if(String(err).includes("400")) {
+        alert("Your username and/or password is incorrect. Please try again.");
+      }
+      else {
+        alert("An error has occured within our server. Please try again.")
+      }
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: LOGIN_FAIL,
@@ -83,6 +89,7 @@ export const register = ({ username, password, email }) => (dispatch) => {
       });
     })
     .catch((err) => {
+      alert("Register failed. Please try again.");
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: REGISTER_FAIL,
@@ -101,6 +108,7 @@ export const logout = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
+      alert("Logout failed. Please try again.");
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };

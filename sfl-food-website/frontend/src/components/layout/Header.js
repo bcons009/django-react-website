@@ -10,20 +10,38 @@ export class Header extends Component {
 		logout: PropTypes.func.isRequired,
 	}
 
+	handleYourEvents() {
+		window.location.href = '#/ViewYourEvents';
+	}
+
 	render() {
 		const { isAuthenticated, user } = this.props.auth;
 
 		const authLinks = (
+			/*
 			 <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
 			 	<span className="navbar-text mr-3">
 			 		<strong>
 			 			{ user ? `Welcome ${user.username}` : `` }
 			 		</strong>
 			 	</span>
+				 <li className="nav-item">
+            		<button onClick={this.handleYourEvents} className="nav-link btn btn-primary btn-sm text-light">Your Events</button>
+            	</li>
             	<li className="nav-item">
             		<button onClick={this.props.logout} className="nav-link btn btn-info btn-sm text-light">Logout</button>
             	</li>
-            </ul>
+			</ul>
+			*/
+			<div className="navbar-nav ml-auto mt-2 mt-lg-0">
+				<span className="navbar-text mr-3 text-nowrap">
+			 		<strong>
+			 			{ user ? `Welcome ${user.username}` : `` }
+			 		</strong>
+			 	</span>
+				<button onClick={this.handleYourEvents} className="nav-link btn btn-primary btn-sm text-light text-nowrap mx-1 rounded">Your Events</button>
+				<button onClick={this.props.logout} className="nav-link btn btn-info btn-sm text-light mx-1 rounded">Logout</button>
+			</div>
 		);
 
 		const guestLinks = (
@@ -38,7 +56,7 @@ export class Header extends Component {
 		);
 
 		return (
-			<nav className="navbar navbar-expand-sm navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg navbar-light bg-light">
 		        <div className="container">
 		          <button
 		            className="navbar-toggler"

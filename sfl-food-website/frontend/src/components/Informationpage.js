@@ -26,6 +26,7 @@ componentDidMount(props) {
 
 makeLocationApiCall = searchInput => {
   var pathname = this.props.location.pathname;
+  console.log(pathname);
   var res = pathname.split("/");
   var ID = res[2];
   var searchUrl = "http://localhost:8000/api/locationsLL/"+ID+"/";

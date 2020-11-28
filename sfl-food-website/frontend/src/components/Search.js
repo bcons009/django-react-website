@@ -11,7 +11,7 @@ import regeneratorRuntime from 'regenerator-runtime';
 export default class Search extends Component {
 
   state = {
-    searchValue: "hi",
+    searchValue: "",
     searchLocation: "Miami, FL 33129",
     searchDistance: 0,
     meals: []
@@ -49,6 +49,8 @@ export default class Search extends Component {
       'distance': this.state.searchDistance
     }
 
+    this.makeApiCall(this.state.searchValue);
+
     //console.log(this.state.searchDistance)
 
     const res = await axios.get('/api/geocode', { params: params });
@@ -69,9 +71,11 @@ export default class Search extends Component {
   handleSearch = () => {
     this.makeApiCall(this.state.searchValue);
   };
+  */
   
   makeApiCall = searchInput => {
-    var searchUrl = `http://localhost:8000/api/locations/`;
+    var searchUrl = `http://localhost:8000/api/locationsLL/`;
+    /*
     fetch(searchUrl)
       .then(response => {
        
@@ -85,6 +89,7 @@ export default class Search extends Component {
         console.log("OK",JSON.stringify(jsonData.meals));
         this.setState({ meals: jsonData.meals });
       });
+      */
       let currentComponent = this;
       fetch(searchUrl).then(function(response) {
         response.json().then(function(parsedJson) {
@@ -97,14 +102,12 @@ export default class Search extends Component {
         });
       }) 
   };
-  */
-
 
   render() {
     return (
       <div className={styles.main} >
         <div className={styles.searchContainer}>
-          <h1>South Florida Free Food</h1>
+          { /* <h1>South Florida Free Food</h1> */ }
 
             <form onSubmit={this.onSubmit}>
               <div className="form-row">
@@ -146,7 +149,7 @@ export default class Search extends Component {
                   <small id="distanceHelp" className="form-text text-muted">...or simply search "Near Me"</small>
                 </div> 
               </div> 
-              <button type="submit" className="btn btn-primary">Search</button>        
+              <button type="submit" className="btn btn-primary rounded">Search</button>        
             </form>
 
             {this.state.meals ? (
@@ -159,18 +162,21 @@ export default class Search extends Component {
                       alt="meal-thumbnail"
                     />
                   */}
-                  <MapDisplay />
+                  <MapDisplay searchValue={this.state.searchValue} />
                 </div>
-                {this.state.meals.map((meal, index) => (
+                {this.state.meals.filter(meals =>meals.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || meals.description.toLowerCase().includes(this.state.searchValue.toLowerCase())).map((meal, index) => (
                 <div className={styles.singleMeal} key={index}>
                   <div className={styles.singleMealContainer}>
                     <div className={styles.singleMealLeft}>
                       <h2>
+                    
                         <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
                       </h2>
-                      <p>
+                      { meal.description.length<300 ?
+                      (<p>
                         {meal.description}
-                      </p>
+                      </p>)
+                      : (<p>{meal.description.substring(0, 300)}"..." <Link to={`/Informationpage/${meal.id}/`}>More</Link></p>)}
                       <p>
                         <b>Serving </b>: {meal.cost}
                       </p>
@@ -181,7 +187,7 @@ export default class Search extends Component {
                       <a href="#">{meal.address}</a>
                     </div>
                   </div>
-                 
+                
                 </div>
                 ))}
               </div>

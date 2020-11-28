@@ -123,6 +123,10 @@ export class ViewYourEvents extends Component {
         return tags_str
     }
 
+    handleAdd = () => {
+        window.location.href = '#/AddEventPage';
+    }
+
     render() {
         const { isAuthenticated, user } = this.props.auth;
 
@@ -151,7 +155,21 @@ export class ViewYourEvents extends Component {
 
         const loggedIn = (
             <div>
-                <h1 style={styles.headerStyle}>{ user ? `${user.username}'s Events:` : `` }</h1>
+                <div style={styles.headerDivStyle}>
+                    <h1 style={styles.headerStyle}>{ user ? `${user.username}'s Events:` : `` }</h1>
+                    <button 
+                        type="button" 
+                        class="btn btn-success btn-lg rounded m-4 text-nowrap"
+                        onClick={this.handleAdd}
+                    >
+                        Create New Event
+                    </button>
+                </div>
+                <div style={styles.pDivStyle}>
+                    <p style={styles.pStyle}>User-created events do not necessarily need to give away food, so long as they are charitable in nature and give away something of use for <strong>free</strong> to anyone interested.</p>
+                    <p style={styles.pStyle}>Please note that we do not allow any users of South Florida Free Food to use events advertised on this site to turn a profit. Any users caught using events they have created to scam others is subject to a ban from using this site.</p>
+                    <p style={styles.pStyle}>Misleading events or events unrelated to charity work are subject to removal from the South Florida Free Food site.</p>
+                </div>
                 { msg1 }
 
                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -167,10 +185,10 @@ export class ViewYourEvents extends Component {
                             Are you sure you want to delete this event?
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" className="btn btn-secondary mx-1 rounded" data-dismiss="modal">Cancel</button>
                             <button 
                                 type="button" 
-                                className="btn btn-danger"
+                                className="btn btn-danger mx-1 rounded"
                                 data-dismiss="modal"
                                 onClick={this.delete_loc.bind(this, this.state.del_id)}
                             >
@@ -194,7 +212,7 @@ export class ViewYourEvents extends Component {
                             <h2 style={styles.nameStyle}>{location.name}</h2>
                             <div style={styles.buttonDivStyle}>
                                 <LinkButton
-                                    className="btn btn-primary btn-sm"
+                                    className="btn btn-primary btn-sm text-nowrap mx-1 rounded"
                                     to={{
                                         pathname: `/EditEventForm/${location.id}`,
                                         id: location.id,
@@ -204,7 +222,7 @@ export class ViewYourEvents extends Component {
                                 </LinkButton>
                                 <button 
                                     type="button" 
-                                    className="btn btn-danger btn-sm"
+                                    className="btn btn-danger btn-sm text-nowrap mx-1 rounded"
                                     data-toggle="modal" 
                                     data-target="#exampleModal"
                                     onClick={this.set_delete_popup.bind(this, location.id)}
@@ -245,7 +263,7 @@ export class ViewYourEvents extends Component {
                             <h2 style={styles.nameStyle}>{location.name}</h2>
                             <div style={styles.buttonDivStyle}>
                                 <LinkButton
-                                    className="btn btn-primary btn-sm"
+                                    className="btn btn-primary btn-sm text-nowrap mx-1 rounded"
                                     to={{
                                         pathname: `/EditEventForm/${location.id}`,
                                         id: location.id,
@@ -255,7 +273,7 @@ export class ViewYourEvents extends Component {
                                 </LinkButton>
                                 <button 
                                     type="button" 
-                                    className="btn btn-danger btn-sm"
+                                    className="btn btn-danger btn-sm text-nowrap mx-1 rounded"
                                     data-toggle="modal" 
                                     data-target="#exampleModal"
                                     onClick={this.set_delete_popup.bind(this, location.id)}
@@ -331,7 +349,7 @@ const styles = {
         fontWeight: "600"
     },
     headerStyle: {
-        margin: "30px 0 60px 9.5vw",
+        margin: "30px 0 20px 9.5vw",
         fontSize: "3.5em"
     },
     titleBarStyle: {
@@ -350,7 +368,19 @@ const styles = {
         fontSize: "3rem",
         opacity: "0.3",
         margin: "0 auto 150px"
-    }
+    },
+    pDivStyle: {
+        margin: "0 0 60px 9.5vw",
+        width: "80%",
+    },
+    pStyle: {
+        margin: "0 auto 7px"
+    },
+    headerDivStyle: {
+        display: "flex", 
+        justifyContent: "space-between", 
+        width: "93%"
+    },
 }
 
 const mapStateToProps = (state) => ({

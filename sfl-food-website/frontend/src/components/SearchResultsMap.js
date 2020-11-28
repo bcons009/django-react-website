@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getLocationsLL } from '../actions/locationsLL'
 import { getULocations } from '../actions/user-locations'
 import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
+import { Link } from "react-router-dom";
 
 export class SearchResultsMap extends Component {
 
@@ -15,7 +16,8 @@ export class SearchResultsMap extends Component {
                 latitude: 26.122438,
                 longitude: -80.137314,
                 zoom: 8.8,
-            }
+            },
+            searchValue: props.searchValue,
         };
     }
 
@@ -36,6 +38,12 @@ export class SearchResultsMap extends Component {
     componentDidMount() {
         this.props.getLocationsLL();
         this.props.getULocations();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.searchValue !== this.props.searchValue) {
+            this.setState({searchValue: this.props.searchValue});
+        }
     }
 
     dateToday = () => {
@@ -79,6 +87,10 @@ export class SearchResultsMap extends Component {
             >
                 { this.props.uLocations.filter(location => (
                     new Date(location.date).getTime() >= new Date(this.dateToday()).getTime()
+                )).filter(location => (
+                    location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+                    location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                    location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
                 )).map(location => (
                     <Marker
                         key={location.id}
@@ -99,7 +111,10 @@ export class SearchResultsMap extends Component {
                         </button>
                     </Marker>
                 )) }
-                { this.props.locationsLL.map(location => (
+                { this.props.locationsLL.filter(location => (
+                    location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+                    location.description.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                )).map(location => (
                     <Marker
                         key={location.id}
                         latitude={location.latitude}

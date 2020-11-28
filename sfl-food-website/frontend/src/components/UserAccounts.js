@@ -9,6 +9,7 @@ import Login from './accounts/Login';
 import Register from './accounts/Register';
 
 import DevHome from "./DevHome";
+import Home from "./Home";
 import Search from "./Search";
 import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
@@ -29,15 +30,16 @@ export default class UserAccounts extends Component {
 		            	<Switch>
 		            		<Route exact path="/login" component={ Login } />
 		             		<Route exact path="/register" component={ Register } />
-							<Route path="/" exact component={DevHome} />
+							<Route path="/" exact component={Home} />
 							<Route path="/Search" exact component={Search} />
 							<Route path="/Map" component={MapDisplay} />
 							<Route path="/Locations" component={LocationsDisplay} />
 							<Route path="/UserAccounts" component={UserAccounts} />
 							<Route path="/AddEventPage" component={AddEventForm} />
-							<Route path="/Informationpage" exact component={Informationpage} />
+							<Route path="/Informationpage:id" exact component={Informationpage} />
 							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
 							<Route path="/EditEventForm/:id" component={EditEventForm} />
+							<Route path="/DevHome" exact component={DevHome} />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 
