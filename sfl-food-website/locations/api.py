@@ -38,16 +38,28 @@ class OrgLocationLLViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = OrgLocationLLSerializer
 
-# Geocode Route for Search
-
 # UserLocation ViewSet
-
-
 class UserLocationViewSet(viewsets.ModelViewSet):
     queryset = UserLocation.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = UserLocationSerializer
 
+
+class SubmitReviewAPI(generics.GenericAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = LocationReviewsSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        review = serializer.save()
+        return Response({
+                        "review": LocationReviewsSerializer(review, context=self.get_serializer_context()).data,
+                        })
+
+
+# Geocode Route for Search
 class GeocodeAPI(generics.GenericAPIView):
 
     authentication_classes = []
