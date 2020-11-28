@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
+from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation, LocationReviews
 
 # OrgLocation Serializer
 class OrgLocationSerializer(serializers.ModelSerializer):
@@ -24,3 +24,10 @@ class UserLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserLocation
         fields = '__all__'
+
+class LocationReviewsSerializer(serializers.ModelSerializer):
+    location = serializers.StringRelatedField()
+
+    class Meta:
+        model = LocationReviews
+        fields = ['location', 'rating', 'review']
