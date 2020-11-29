@@ -14,7 +14,7 @@ import Search from "./Search";
 import MapDisplay from "./displays/MapDisplay";
 import LocationsDisplay from "./displays/LocationsDisplay";
 import AddEventForm from './user-events/AddEventForm'
-import Informationpage from "./Informationpage";
+import InformationpageDisplay from "./displays/InformationpageDisplay";
 import ViewYourEvents from './user-events/ViewYourEvents';
 import EditEventForm from './user-events/EditEventForm'
 
@@ -36,7 +36,7 @@ export default class UserAccounts extends Component {
 							<Route path="/Locations" component={LocationsDisplay} />
 							<Route path="/UserAccounts" component={UserAccounts} />
 							<Route path="/AddEventPage" component={AddEventForm} />
-							<Route path="/Informationpage:id" exact component={Informationpage} />
+							<Route path="/Informationpage/:id" exact component={InformationpageDisplay} />
 							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
 							<Route path="/EditEventForm/:id" component={EditEventForm} />
 							<Route path="/DevHome" exact component={DevHome} />

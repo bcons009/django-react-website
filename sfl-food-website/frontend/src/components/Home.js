@@ -20,7 +20,7 @@ export class Home extends Component {
         return (
             <div>
                 <h1 style={styles.h1Style}>South Florida Free Food</h1>
-                <h3 style={styles.h3Style}>Search by location or by keywords for food pantries, food banks, and other charity organizations and events giving way free food and other essential supplies.</h3>
+                <h3 style={styles.h3Style}>Search by location or by keywords for food pantries, food banks, and other charity organizations/events giving way free food and other essential supplies.</h3>
                 <h3 style={styles.h3Style}>Please make sure to read location/event descriptions carefully to make sure you meet the criteria for receiving aid from the organizers running these locations/events.</h3>
                 {isAuthenticated ? authMsg : guestMsg}
                 <br />

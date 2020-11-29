@@ -1,7 +1,7 @@
 from django.core import serializers
 from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
 from rest_framework import viewsets, permissions, generics
-from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer
+from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer, LocationReviewsSerializer
 
 from rest_framework.response import Response
 import requests
@@ -77,6 +77,7 @@ class GeocodeAPI(generics.GenericAPIView):
             email=loc.email,
             phone_number=loc.phone_number,
             last_updated_at=loc.last_updated_at,
+            id=loc.id,
         )
 
     def get(self, request, *args, **kwargs):
@@ -94,8 +95,8 @@ class GeocodeAPI(generics.GenericAPIView):
         in_range = GetLocationsInRange(queryset, location, max_distance)
 
         # convert python list to json
-        #parsed = json.loads(in_range)
-        #json_in_range = json.dumps(parsed)
+        # parsed = json.loads(in_range)
+        # json_in_range = json.dumps(parsed)
         if not in_range:
             return Response('no results')
 
@@ -103,6 +104,31 @@ class GeocodeAPI(generics.GenericAPIView):
 
         # return in_range
         res = [self.as_json(loc) for loc in in_range]
+        return Response(res)
+
+
+class ReverseGeocodeAPI(generics.GenericAPIView):
+
+    authentication_classes = []
+    permission_classes = []
+
+    def as_json(self, loc):
+        return dict(
+            location=loc
+        )
+
+    def get(self, request, *args, **kwargs):
+        latitude = request.query_params['latitude']
+        longitude = request.query_params['longitude']
+
+        api_key = "2de14d5ec4835742c7b6d339ab0b4e29"
+        endpoint = f'http://api.positionstack.com/v1/reverse?access_key={api_key}&query={latitude},{longitude}&output=json'
+        r = requests.get(endpoint)
+        content = json.loads(r.content)
+        print(content['data'][0]['name'])
+        location = content['data'][0]['name']
+
+        res = self.as_json(location)
         return Response(res)
 
 

@@ -13,11 +13,12 @@ export class SearchResultsMap extends Component {
         this.state = { 
             locationSelected: false,
             viewport: {
-                latitude: 26.122438,
-                longitude: -80.137314,
-                zoom: 8.8,
+                latitude: 25.947,
+                longitude: -80.28,
+                zoom: 8.05,
             },
             searchValue: props.searchValue,
+            meals: props.meals,
         };
     }
 
@@ -43,6 +44,10 @@ export class SearchResultsMap extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.searchValue !== this.props.searchValue) {
             this.setState({searchValue: this.props.searchValue});
+        }
+        if (prevProps.meals !== this.props.meals) {
+            this.setState({meals: this.props.meals});
+            console.log(this.props.meals);
         }
     }
 
@@ -86,11 +91,11 @@ export class SearchResultsMap extends Component {
                 style={{ width: '100%', height: '100%' }}
             >
                 { this.props.uLocations.filter(location => (
-                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime()
-                )).filter(location => (
-                    location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
-                    location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                    location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime() && (
+                        location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+                        location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                        location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                    )
                 )).map(location => (
                     <Marker
                         key={location.id}
@@ -111,10 +116,7 @@ export class SearchResultsMap extends Component {
                         </button>
                     </Marker>
                 )) }
-                { this.props.locationsLL.filter(location => (
-                    location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
-                    location.description.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                )).map(location => (
+                { this.props.meals.map(location => (
                     <Marker
                         key={location.id}
                         latitude={location.latitude}

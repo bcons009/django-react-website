@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import ReactDOM from "react-dom";
 import styles from "../mystyle.module.css";
 import MapDisplay from "./displays/MapDisplay";
 import Informationpage from './Informationpage.js';
@@ -8,34 +7,126 @@ import { search } from '../actions/search';
 import axios from 'axios';
 import regeneratorRuntime from 'regenerator-runtime';
 
-export default class Search extends Component {
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getLocationsLL } from "../actions/locationsLL";
+import { Fragment } from "react/cjs/react.production.min";
 
-  state = {
-    searchValue: "",
-    searchLocation: "Miami, FL 33129",
-    searchDistance: 0,
-    meals: []
+export class Search extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchValue: "",
+      searchLocation: "",
+      searchDistance: 0,
+      userLocation: "",
+      meals: []
+    };
+  }
+  
+  static propTypes = {
+    locationsLL: PropTypes.array.isRequired,
+    // uLocations: PropTypes.array.isRequired,
   };
+
+  componentDidMount() {
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(this.success.bind(this));
+    }
+    this.props.getLocationsLL();
+
+    console.log("Hello", this.props.locationsLL);
+  }
 
 
   valueChange = e => this.setState({
       searchValue: e.target.value
-  });
+  })
 
   locationChange = e => this.setState({
       searchLocation: e.target.value
-  });
+  })
 
   distanceChange = e => this.setState({
       searchDistance: e.target.value
-  });
+  })
+
+  getLocation = position => {
+    console.log(position);
+  }
+
+
+  async success(pos) {
+    const { latitude, longitude } = pos.coords;
+    
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+    };
+
+    const params = {
+      'latitude': latitude,
+      'longitude': longitude
+    }
+
+    //console.log(state.searchDistance)
+
+    const res = await axios.get('/api/revGeocode', { params: params });
+    const location = res.data['location'];
+
+
+    console.log(res.data['location']);
+    this.setState({ userLocation: location });
+  }
+
+  locateUser = e => {
+    console.log('hi');
+    if (navigator.geolocation) {
+      this.setState({ searchLocation: this.state.userLocation });
+     /* navigator.geolocation
+        .getCurrentPosition((pos) => {
+          const { latitude, longitude } = pos.coords;
+          const apiKey = "2de14d5ec4835742c7b6d339ab0b4e29";
+          fetch(`http://api.positionstack.com/v1/reverse?access_key=${apiKey}&query=${latitude},${longitude}&output=json`)
+            .then(res => res.json())
+            .then(res => getLocation);
+        } function(pos) {
+                console.log(pos);
+                const { latitude, longitude } = pos.coords;
+                console.log(latitude);
+            }); */
+      console.log('yay from locateUser')
+    }
+    else {
+      alert('Your browser does not support geolocation.');
+    }
+  }
+
 
   onSubmit = e => {
     e.preventDefault();
-    this.getResults();
+    this.state.searchLocation === "" ? this.keywordSearch() : this.getSearchResults()
   };
 
-  async getResults() {
+  keywordSearch = () => {
+    const meals_results = this.props.locationsLL.filter(
+      (locationsLL) =>
+        locationsLL.name
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase()) ||
+        locationsLL.description
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase())
+    );
+    this.setState({
+      meals: meals_results
+    });
+    document.getElementById("divmap").style.visibility = "visible";
+  }
+
+  async getSearchResults() {
     // Headers
     const config = {
         headers: {
@@ -49,8 +140,6 @@ export default class Search extends Component {
       'distance': this.state.searchDistance
     }
 
-    this.makeApiCall(this.state.searchValue);
-
     //console.log(this.state.searchDistance)
 
     const res = await axios.get('/api/geocode', { params: params });
@@ -59,145 +148,131 @@ export default class Search extends Component {
       alert('No results. Please try again.');
     }
     else {
-      this.setState({ meals: res.data });
+      if (this.state.searchValue === "") {
+        this.setState({
+          meals: res.data
+        })
+      }
+      else {
+        this.setState({ 
+          meals: res.data.filter(location => 
+            location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+            location.description.toLowerCase().includes(this.state.searchValue.toLowerCase())
+          ) 
+        });
+      }
+      document.getElementById("divmap").style.visibility = "visible";
     }
 
   }
 
-  /*  
-  handleOnChange = event => {
-    this.setState({ searchValue: event.target.value });
-  };
-  handleSearch = () => {
-    this.makeApiCall(this.state.searchValue);
-  };
-  */
-  
-  makeApiCall = searchInput => {
-    var searchUrl = `http://localhost:8000/api/locationsLL/`;
-    /*
-    fetch(searchUrl)
-      .then(response => {
-       
-        //alert(JSON.stringify(response)) ;
-        var jsondata = "{\"meals\": [{\"eventid\": \"52955\",\"eventName\": \"Free give away\",\"eventAddress\": \"123 Vermont St, Weston, FL\",\"eventDate\": \"12/10/2020\"},{\"eventid\": \"52355\",\"eventName\": \"YMCA Food Drive\",\"eventAddress\": \"1464 Nashville St, Miami, FL\",\"eventDate\": \"11/21/2020\"},{\"eventid\": \"555\",\"eventName\": \"Publix Food Drive\",\"eventAddress\": \"21 Baker St, Cooper city, FL\",\"eventDate\": \"10/29/2020\"}]}";
-        document.getElementById("divmap").style.visibility = "visible";
-        return JSON.parse(jsondata);
-      })
-      .then(jsonData => {
-       // alert("meaks"+meals);
-        console.log("OK",JSON.stringify(jsonData.meals));
-        this.setState({ meals: jsonData.meals });
-      });
-      */
-      let currentComponent = this;
-      fetch(searchUrl).then(function(response) {
-        response.json().then(function(parsedJson) {
-        document.getElementById("divmap").style.visibility = "visible";
-        return parsedJson;
-          
-        })
-        .then(jsonData  => {
-          currentComponent.setState({ meals: jsonData  });
-        });
-      }) 
-  };
-
   render() {
     return (
-      <div className={styles.main} >
-        <div className={styles.searchContainer}>
-          { /* <h1>South Florida Free Food</h1> */ }
-
-            <form onSubmit={this.onSubmit}>
-              <div className="form-row">
-                <div className="form-group col-md-12">
-                  <label>Search</label>
-                  <input 
-                    className="form-control" 
-                    type="text" 
-                    id="keyword" 
-                    onChange={(e) => this.valueChange(e)} 
-                    //value={this.state.searchValue} 
-                    placeholder="Enter keywords..." 
-                  />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group col-md-10">
-                  <label>Location</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    id="location" 
-                    onChange={(e) => this.locationChange(e)} 
-                    //value={this.state.searchLocation} 
-                    placeholder="Enter address, zip, etc."
-                  />
-                </div>
-                <div className="form-group col-md-2">
-                  <label>Distance (miles)</label>
-                  <input 
-                    type="number" 
-                    className="form-control" 
-                    id="distance" 
-                    onChange={(e) => this.distanceChange(e)} 
-                    //value={this.state.searchDistance} 
-                    aria-describedby="distanceHelp" 
-                    placeholder="Near Me" 
-                  />
-                  <small id="distanceHelp" className="form-text text-muted">...or simply search "Near Me"</small>
-                </div> 
-              </div> 
-              <button type="submit" className="btn btn-primary rounded">Search</button>        
-            </form>
-
-            {this.state.meals ? (
-              <div className={styles.mealsContainer}>
-                <div id="divmap" className={styles.mapSection}>
-                  {/*
-                    <img
-                      width="90%"
-                      src="https://www.themealdb.com/images/media/meals/58oia61564916529.jpg"
-                      alt="meal-thumbnail"
+      <Fragment>
+        <div className={styles.main} >
+          <div className={styles.searchContainer}>
+              <form onSubmit={this.onSubmit}>
+                <div className="form-row">
+                  <div className="form-group col-md-12">
+                    <label>Search</label>
+                    <input 
+                      className="form-control" 
+                      type="text" 
+                      id="keyword" 
+                      onChange={(e) => this.valueChange(e)} 
+                      value={this.state.searchValue} 
+                      placeholder="Enter keywords..." 
                     />
-                  */}
-                  <MapDisplay searchValue={this.state.searchValue} />
-                </div>
-                {this.state.meals.filter(meals =>meals.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || meals.description.toLowerCase().includes(this.state.searchValue.toLowerCase())).map((meal, index) => (
-                <div className={styles.singleMeal} key={index}>
-                  <div className={styles.singleMealContainer}>
-                    <div className={styles.singleMealLeft}>
-                      <h2>
-                    
-                        <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
-                      </h2>
-                      { meal.description.length<300 ?
-                      (<p>
-                        {meal.description}
-                      </p>)
-                      : (<p>{meal.description.substring(0, 300)}"..." <Link to={`/Informationpage/${meal.id}/`}>More</Link></p>)}
-                      <p>
-                        <b>Serving </b>: {meal.cost}
-                      </p>
-                    </div>
-                    <div className={styles.singleMealRight}>
-                      <p>{meal.email}</p>
-                      <p>{meal.phone_number}</p>
-                      <a href="#">{meal.address}</a>
-                    </div>
                   </div>
-                
                 </div>
-                ))}
-              </div>
-              ) : (
-                  <p>Try searching for a meal</p>
-                )}
+                <div className="form-row">
+                  <div className="form-group col-md-8">
+                    <label>Location</label>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      id="location" 
+                      onChange={(e) => this.locationChange(e)} 
+                      value={this.state.searchLocation} 
+                      placeholder="Enter address, zip, etc."
+                    />
+                  </div>
+                  <div className="form-group col-md-2">
+                    <label>-</label>
+                    <input 
+                      type="button" 
+                      className="form-control btn btn-light" 
+                      id="locateUser" 
+                      onClick={e => this.locateUser(e)} 
+                      value={'Find me!'} 
+                    />
+                  </div>
+                  <div className="form-group col-md-2">
+                    <label>Distance (miles)</label>
+                    <input 
+                      type="number" 
+                      className="form-control" 
+                      id="distance" 
+                      onChange={(e) => this.distanceChange(e)} 
+                      //value={this.state.searchDistance} 
+                      aria-describedby="distanceHelp" 
+                      placeholder="Near Me" 
+                    />
+                  </div> 
+                </div> 
+                <button type="submit" className="btn btn-primary">Search</button>        
+              </form>
+
+              {this.state.meals ? (
+                <div id="mealsContainer" className={styles.mealsContainer}>
+                  <div id="divmap" className={styles.mapSection}>
+                    <MapDisplay searchValue={this.state.searchValue} meals={this.state.meals}/>
+                  </div>
+                  {this.state.meals.map((meal, index) => (
+                  <div className={styles.singleMeal} key={index}>
+                    <div className={styles.singleMealContainer}>
+                      <div className={styles.singleMealLeft}>
+                        <h2>
+                          <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
+                        </h2>
+                        {meal.description.length < 300 ? (
+                          <p>{meal.description}</p>
+                        ) : (
+                          <p>
+                            {meal.description.substring(0, 300)}"..."{" "}
+                            <Link to={`/Informationpage/${meal.id}/`}>
+                              More
+                            </Link>
+                          </p>
+                        )}
+                      </div>
+                      <div className={styles.singleMealRight}>
+                        {meal.email.includes("null") ? 
+                          <p>(no email)</p> : <p>{meal.email}</p>
+                        }
+                        <p>{meal.phone_number}</p>
+                        <a href="#">{meal.address}</a>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  ))}
+                </div>
+                ) : (
+                    <p>Try searching for a meal</p>
+                  )}
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
 
-{/*ReactDOM.render(<Search />, document.getElementById("app"));*/} 
+const mapStateToProps = (state) => ({
+  locationsLL: state.locationsLL.locationsLL,
+  //uLocations: state.uLocations.uLocations,
+});
+
+export default connect(mapStateToProps, { getLocationsLL })(
+  Search
+);
