@@ -20,7 +20,7 @@ export class AddReviewForm extends Component {
             user: "",
             title: "",
             review: "",
-            rating: 1,
+            rating: 0,
             is_loading: false,
             onClickId: this.props.match.params.id ,
            // onClickId: "",
