@@ -8,6 +8,7 @@ import LocationsDisplay from "./displays/LocationsDisplay";
 import UserAccounts from './UserAccounts';
 import AddEventPage from './user-events/AddEventPage'
 import Informationpage from "./Informationpage";
+import AddReview from "./AddReview";
 
 import history from './history';
 

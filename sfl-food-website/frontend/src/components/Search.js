@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { search } from '../actions/search';
 import axios from 'axios';
 import regeneratorRuntime from 'regenerator-runtime';
-
+import LinkButton from "./misc/LinkButton";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getLocationsLL } from "../actions/locationsLL";
@@ -247,6 +247,17 @@ export class Search extends Component {
                         )}
                       </div>
                       <div className={styles.singleMealRight}>
+                      <div style={sstyles.buttonDivStyle}>
+                      <LinkButton
+                                    className="btn btn-primary btn-sm text-nowrap mx-1 rounded"
+                                    to={{
+                                        pathname: `/AddReview/${meal.id}`,
+                                        id: meal.id,
+                                    }}
+                                >
+                                    Add Review
+                                </LinkButton>
+                        </div> 
                         {meal.email.includes("null") ? 
                           <p>(no email)</p> : <p>{meal.email}</p>
                         }
@@ -276,3 +287,80 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { getLocationsLL })(
   Search
 );
+
+const sstyles = {
+  outerDivStyle: {
+      width: "60%",
+      height: "90%",
+      margin: "50px auto",
+      backgroundColor: "#F5F5F5",
+      border: "3px solid #4286f4",
+      borderRadius: "10px"
+  },
+  formStyle: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: "100%",
+      justifyContent: "space-evenly",
+      alignItems: "center"
+  },
+  labelStyle: {
+      width: "60%",
+      height: "100%",
+      margin: "30px auto 0px",
+      fontSize: "1.2em"
+  },
+  bottomLabelStyle: {
+      width: "60%",
+      height: "100%",
+      margin: "30px auto"
+  },
+  inputStyle: {
+      margin: "10px 0",
+      width: "100%"
+  },
+  descriptionStyle: {
+      margin: "10px 0",
+      width: "100%",
+      resize: "none"
+  },
+  timeDivStyle: {
+      display: "flex",
+      justifyContent: "space-between",
+      margin: "10px 0 0",
+  },
+  startTimeDivStyle: {
+      width: "90%",
+      margin: "0 10px 0 0",
+      fontSize: "0.8em"
+  },
+  endTimeDivStyle: {
+      width: "90%",
+      margin: "0 0 0 10px",
+      fontSize: "0.8em"
+  },
+  timeStyle: {
+      width: "100%",
+      margin: "0"
+  },
+  submitStyle: {
+      width: "100%",
+      margin: "0 auto 30px",
+      borderColor: "#4286f4",
+      color: "white",
+      backgroundColor: "#4286f4",
+      transition: "color 0.3s, background-color 0.3s"
+  },
+  headerStyle: {
+      margin: "0"
+  },
+  addressDivStyle: {
+      fontSize: "0.8em"
+  },
+  stateDivStyle: {
+      fontSize: "1.2em",
+      fontWeight: "bold",
+      margin: "10px 0"
+  },
+}

@@ -30,4 +30,4 @@ class LocationReviewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LocationReviews
-        fields = ['location', 'rating', 'review']
+        fields = '__all__'
