@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import { addReview } from '../actions/reviews';
 import { getULocations } from '../actions/user-locations';
 import { getLocationsLL } from '../actions/locationsLL';
-import {addReview } from '../actions/reviews'
+
 
 
 export class AddReviewForm extends Component {
@@ -77,7 +77,7 @@ export class AddReviewForm extends Component {
             user = user.id
             this.setState({user: user});
 
-            const { title,review,rating } = this.state;
+            const { title,review,rating,location } = this.state;
             const aReview = { user, title, review, rating };
             
             this.props.addReview(aReview, this.state.onClickId);
