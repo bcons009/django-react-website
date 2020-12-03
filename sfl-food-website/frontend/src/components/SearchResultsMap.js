@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getLocationsLL } from '../actions/locationsLL'
+import { getULocations } from '../actions/user-locations'
 import MapGL, { Marker, Popup } from '@urbica/react-map-gl'
 import { Link } from "react-router-dom";
 
@@ -12,12 +13,13 @@ export class SearchResultsMap extends Component {
         this.state = { 
             locationSelected: false,
             viewport: {
-                latitude: 26.122438,
-                longitude: -80.137314,
-                zoom: 8.8,
-            }
+                latitude: 25.947,
+                longitude: -80.28,
+                zoom: 8.05,
+            },
+            searchValue: props.searchValue,
+            meals: props.meals,
         };
-        // this.mapRef = React.createRef();
     }
 
     selectedLocation = {
@@ -30,17 +32,39 @@ export class SearchResultsMap extends Component {
     };
 
     static propTypes = {
-        locationsLL: PropTypes.array.isRequired
+        locationsLL: PropTypes.array.isRequired,
+        uLocations: PropTypes.array.isRequired,
     }
 
     componentDidMount() {
         this.props.getLocationsLL();
-        /*
-        const map = this.mapRef.current.getMap(); 
-        map.once('load', () => {
-            map.resize();
-        });
-        */
+        this.props.getULocations();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.searchValue !== this.props.searchValue) {
+            this.setState({searchValue: this.props.searchValue});
+        }
+        if (prevProps.meals !== this.props.meals) {
+            this.setState({meals: this.props.meals});
+            console.log(this.props.meals);
+        }
+    }
+
+    dateToday = () => {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1;    // January is 0!
+        let yyyy = today.getFullYear();
+        if(dd<10){
+                dd = '0' + dd
+            } 
+            if(mm<10){
+                mm = '0' + mm
+            } 
+
+        today = yyyy + '-' + mm + '-' + dd;
+        return today;
     }
 
     render() {
@@ -66,7 +90,13 @@ export class SearchResultsMap extends Component {
                 }}
                 style={{ width: '100%', height: '100%' }}
             >
-                { this.props.locationsLL.map(location => (
+                { this.props.uLocations.filter(location => (
+                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime() && (
+                        location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+                        location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+                        location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
+                    )
+                )).map(location => (
                     <Marker
                         key={location.id}
                         latitude={location.latitude}
@@ -80,7 +110,27 @@ export class SearchResultsMap extends Component {
                             }}
                         >
                             <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/8/88/Map_marker.svg" 
+                                src="http://maps.google.com/mapfiles/ms/micons/red.png"
+                                alt="Location Icon" 
+                            />
+                        </button>
+                    </Marker>
+                )) }
+                { this.props.meals.map(location => (
+                    <Marker
+                        key={location.id}
+                        latitude={location.latitude}
+                        longitude={location.longitude}
+                    >
+                        <button 
+                            style={styles.buttonStyle}
+                            onClick={e => {
+                                e.preventDefault();
+                                setSelectedLocation(location);
+                            }}
+                        >
+                            <img 
+                                src="http://maps.google.com/mapfiles/ms/micons/blue.png"
                                 alt="Location Icon" 
                             />
                         </button>
@@ -94,7 +144,7 @@ export class SearchResultsMap extends Component {
                             hideSelectedLocation(null);
                         }}
                     >
-                        <h3> <Link to={`/Informationpage/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
+                        <h3> <Link to={`/Informationpage/L/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
                         <p>{this.state.selectedLocation.address}</p>
                     </Popup>
                 ) : <div>NULL</div>}
@@ -120,7 +170,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    locationsLL: state.locationsLL.locationsLL
+    locationsLL: state.locationsLL.locationsLL,
+    uLocations: state.uLocations.uLocations,
 });
 
-export default connect(mapStateToProps, { getLocationsLL })(SearchResultsMap);
+export default connect(mapStateToProps, { getLocationsLL, getULocations })(SearchResultsMap);
