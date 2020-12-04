@@ -12,7 +12,7 @@ export class MapDisplay extends Component {
         return (
             <Provider store={store}>
                 <div style={{width: "100%", height: "100%"}}>
-                    <SearchResultsMap searchValue={this.props.searchValue} meals={this.props.meals} />
+                    <SearchResultsMap searchValue={this.props.searchValue} meals={this.props.meals} userlocations={this.props.userlocations} />
                 </div>
             </Provider>
         )

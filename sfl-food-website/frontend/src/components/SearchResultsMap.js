@@ -19,6 +19,8 @@ export class SearchResultsMap extends Component {
             },
             searchValue: props.searchValue,
             meals: props.meals,
+            userlocations: props.userlocations,
+            userloc_b: false,
         };
     }
 
@@ -71,8 +73,9 @@ export class SearchResultsMap extends Component {
         const setViewport = viewport => this.setState(viewport);
 
         const { selectedLocation } = this;
-        const setSelectedLocation = selectedLocation => this.setState({
+        const setSelectedLocation = (selectedLocation, u) => this.setState({
             locationSelected: true,
+            userloc_b: u,
             selectedLocation
         });
         const hideSelectedLocation = selectedLocation => this.setState({
@@ -90,13 +93,7 @@ export class SearchResultsMap extends Component {
                 }}
                 style={{ width: '100%', height: '100%' }}
             >
-                { this.props.uLocations.filter(location => (
-                    new Date(location.date).getTime() >= new Date(this.dateToday()).getTime() && (
-                        location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
-                        location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
-                        location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
-                    )
-                )).map(location => (
+                { this.props.userlocations.map(location => (
                     <Marker
                         key={location.id}
                         latitude={location.latitude}
@@ -106,7 +103,7 @@ export class SearchResultsMap extends Component {
                             style={styles.buttonStyle}
                             onClick={e => {
                                 e.preventDefault();
-                                setSelectedLocation(location);
+                                setSelectedLocation(location, true);
                             }}
                         >
                             <img 
@@ -126,7 +123,7 @@ export class SearchResultsMap extends Component {
                             style={styles.buttonStyle}
                             onClick={e => {
                                 e.preventDefault();
-                                setSelectedLocation(location);
+                                setSelectedLocation(location, false);
                             }}
                         >
                             <img 
@@ -144,7 +141,7 @@ export class SearchResultsMap extends Component {
                             hideSelectedLocation(null);
                         }}
                     >
-                        <h3> <Link to={`/Informationpage/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
+                        <h3> <Link to={`/Informationpage/${this.state.userloc_b ? "U" : "L"}/${this.state.selectedLocation.id}/`}>{this.state.selectedLocation.name}</Link></h3>
                         <p>{this.state.selectedLocation.address}</p>
                     </Popup>
                 ) : <div>NULL</div>}

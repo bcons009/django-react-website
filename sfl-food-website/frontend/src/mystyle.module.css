@@ -49,6 +49,7 @@ button {
   margin-top: 20px;
   border-radius: 18px;
   overflow: overlay;
+  height: 1000px;
 }
 
 .singleMeal {
@@ -66,7 +67,7 @@ button {
   /*border: 1px solid rgb(0, 183, 255);*/
   margin: 10px;
   width: 60%;
-  text-align: justify;   
+  text-align: left;
 }
 
 .singleMealLeft a{
@@ -93,7 +94,8 @@ button {
   /*border: 1px solid green;*/
   width: 35%;
   height: 50vh;
-  top: 0;
+  /*height: 35%;*/
+  top: 0px;
   margin: 10px;
   padding: 10px;
   position: sticky;

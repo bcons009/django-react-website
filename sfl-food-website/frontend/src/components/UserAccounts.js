@@ -40,6 +40,8 @@ export default class UserAccounts extends Component {
 							<Route path="/ViewYourEvents" exact component={ViewYourEvents} />
 							<Route path="/EditEventForm/:id" component={EditEventForm} />
 							<Route path="/DevHome" exact component={DevHome} />
+							<Route path="/Informationpage/U/:id" exact component={InformationpageDisplay} />
+							<Route path="/Informationpage/L/:id" exact component={InformationpageDisplay} />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 

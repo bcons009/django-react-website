@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getLocationsLL } from "../actions/locationsLL";
 import { Fragment } from "react/cjs/react.production.min";
+import { getULocations } from "../actions/user-locations";
 
 export class Search extends Component {
 
@@ -21,12 +22,14 @@ export class Search extends Component {
       searchLocation: "",
       searchDistance: 0,
       userLocation: "",
-      meals: []
+      meals: [],
+      userlocations: [],
     };
   }
   
   static propTypes = {
     locationsLL: PropTypes.array.isRequired,
+    getULocations: PropTypes.func.isRequired,
     // uLocations: PropTypes.array.isRequired,
   };
 
@@ -35,6 +38,7 @@ export class Search extends Component {
       navigator.geolocation.getCurrentPosition(this.success.bind(this));
     }
     this.props.getLocationsLL();
+    this.props.getULocations();
 
     console.log("Hello", this.props.locationsLL);
   }
@@ -120,8 +124,27 @@ export class Search extends Component {
           .toLowerCase()
           .includes(this.state.searchValue.toLowerCase())
     );
+    const userlocation_results = this.props.uLocations.filter(location => (
+      new Date(location.date).getTime() >= new Date(this.dateToday()).getTime() && (
+          location.name.toLowerCase().includes(this.state.searchValue.toLowerCase()) || 
+          location.description.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+          location.tags.toLowerCase().includes(this.state.searchValue.toLowerCase())
+      )
+      )).filter(
+      (uLocations) =>
+      uLocations.name
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase()) ||
+          uLocations.description
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase()) ||
+          uLocations.tags
+          .toLowerCase()
+          .includes(this.state.searchValue.toLowerCase())
+    );
     this.setState({
-      meals: meals_results
+      meals: meals_results,
+      userlocations : userlocation_results
     });
     document.getElementById("divmap").style.visibility = "visible";
   }
@@ -164,6 +187,22 @@ export class Search extends Component {
       document.getElementById("divmap").style.visibility = "visible";
     }
 
+  }
+
+  dateToday = () => {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1;    // January is 0!
+    let yyyy = today.getFullYear();
+    if(dd<10){
+            dd = '0' + dd
+        } 
+        if(mm<10){
+            mm = '0' + mm
+        } 
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
   }
 
   render() {
@@ -226,21 +265,21 @@ export class Search extends Component {
               {this.state.meals ? (
                 <div id="mealsContainer" className={styles.mealsContainer}>
                   <div id="divmap" className={styles.mapSection}>
-                    <MapDisplay searchValue={this.state.searchValue} meals={this.state.meals}/>
+                    <MapDisplay searchValue={this.state.searchValue} meals={this.state.meals} userlocations={this.state.userlocations}/>
                   </div>
                   {this.state.meals.map((meal, index) => (
                   <div className={styles.singleMeal} key={index}>
                     <div className={styles.singleMealContainer}>
                       <div className={styles.singleMealLeft}>
                         <h2>
-                          <Link to={`/Informationpage/${meal.id}/`}>{meal.name}</Link>
+                          <Link to={`/Informationpage/L/${meal.id}/`}>{meal.name}</Link>
                         </h2>
                         {meal.description.length < 300 ? (
                           <p>{meal.description}</p>
                         ) : (
                           <p>
                             {meal.description.substring(0, 300)}"..."{" "}
-                            <Link to={`/Informationpage/${meal.id}/`}>
+                            <Link to={`/Informationpage/L/${meal.id}/`}>
                               More
                             </Link>
                           </p>
@@ -257,11 +296,41 @@ export class Search extends Component {
                   
                   </div>
                   ))}
+                  {this.state.userlocations.map((meal, index) => (
+                    <div className={styles.singleMeal} key={index}>
+                      <div className={styles.singleMealContainer}>
+                        <div className={styles.singleMealLeft}>
+                          <h2>
+                            <Link to={`/Informationpage/U/${meal.id}/`}>{meal.name}</Link>
+                          </h2>
+                          {meal.description.length < 300 ? (
+                            <p>{meal.description}</p>
+                          ) : (
+                            <p>
+                              {meal.description.substring(0, 300)}"..."{" "}
+                              <Link to={`/Informationpage/U/${meal.id}/`}>
+                                More
+                              </Link>
+                            </p>
+                          )}
+                        </div>
+                        <div className={styles.singleMealRight}>
+                          {meal.email.includes("null") ? 
+                            <p>(no email)</p> : <p>{meal.email}</p>
+                          }
+                          <p>{meal.phone_number}</p>
+                          <a href="#">{meal.address}</a>
+                        </div>
+                      </div>
+                    
+                    </div>
+                    ))}
                 </div>
                 ) : (
                     <p>Try searching for a meal</p>
                   )}
-          </div>
+
+                   </div>
         </div>
       </Fragment>
     );
@@ -270,9 +339,9 @@ export class Search extends Component {
 
 const mapStateToProps = (state) => ({
   locationsLL: state.locationsLL.locationsLL,
-  //uLocations: state.uLocations.uLocations,
+  uLocations: state.uLocations.uLocations,
 });
 
-export default connect(mapStateToProps, { getLocationsLL })(
+export default connect(mapStateToProps, { getLocationsLL, getULocations })(
   Search
 );
