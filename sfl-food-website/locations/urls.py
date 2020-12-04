@@ -15,6 +15,6 @@ urlpatterns += [
     # path('api/', include(router.urls)),
     path('api/geocode', GeocodeAPI.as_view(), name='geocode'),
     path('api/revGeocode', ReverseGeocodeAPI.as_view(), name='revGeocode'),
-    path('api/postReview', SubmitReviewAPI.as_view())
+    path('api/postReview/', SubmitReviewAPI.as_view())
     # path('api/userlocs', csrf_exempt(UserLocationAPI.as_view()), name='userlocs')
 ]

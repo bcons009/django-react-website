@@ -1,5 +1,5 @@
 from django.core import serializers
-from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation
+from locations.models import OrgLocation, OrgSchedule, OrgLocationLL, UserLocation, LocationReviews
 from rest_framework import viewsets, permissions, generics
 from .serializers import OrgLocationSerializer, OrgScheduleSerializer, OrgLocationLLSerializer, UserLocationSerializer, LocationReviewsSerializer
 
