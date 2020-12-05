@@ -56,7 +56,7 @@ export class AddReviewForm extends Component {
         [e.target.name]: e.target.value
     });
 
-    validateInputs = () => {
+    /*validateInputs = () => {
         const { title, review, rating } = this.state;
         if (!title || !review || !rating) {
             return false;
@@ -64,12 +64,12 @@ export class AddReviewForm extends Component {
         else {
             return true;
         }
-    }
+    }*/
 
     onSubmit = e => {
         e.preventDefault();
 
-        if (this.validateInputs()) {
+        //if (this.validateInputs()) {
             this.setState({is_loading: true});
             this.setState({hover: false});
 
@@ -88,10 +88,10 @@ export class AddReviewForm extends Component {
                 // redirect
             window.location.href = '#';
                   
-        }
-        else {
-            alert("Please make sure to fill out all fields before submitting.");
-        }            
+        //}
+        //else {
+        //    alert("Please make sure to fill out all fields before submitting.");
+        //}            
     }
    
     render() {
