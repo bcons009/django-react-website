@@ -20,7 +20,7 @@ export class AddReviewForm extends Component {
             user: "",
             title: "",
             review: "",
-            rating: 0,
+            rating: 1,
             is_loading: false,
             onClickId: this.props.match.params.id ,
            // onClickId: "",
@@ -80,7 +80,8 @@ export class AddReviewForm extends Component {
             const { title,review,rating,location } = this.state;
             const aReview = { user, title, review, rating };
             
-            this.props.addReview(aReview, this.state.onClickId);
+            //this.props.addReview(aReview, this.state.onClickId);
+            this.props.addReview(aReview);
             console.log(aReview);
 
             alert("Event has been successfully updated!");
