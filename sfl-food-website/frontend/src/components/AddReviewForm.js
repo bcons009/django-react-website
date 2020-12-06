@@ -180,10 +180,11 @@ export class AddReviewForm extends Component {
                     <label style={styles.labelStyle}>
                         Rating:
                         <select 
+                            name="rating"
                             value={rating} 
                             onChange={this.onChange} 
                         >
-                        <option value="1">1</option>
+                            <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
