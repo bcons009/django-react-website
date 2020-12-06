@@ -17,6 +17,7 @@ import AddEventForm from './user-events/AddEventForm'
 import InformationpageDisplay from "./displays/InformationpageDisplay";
 import ViewYourEvents from './user-events/ViewYourEvents';
 import EditEventForm from './user-events/EditEventForm'
+import AddReviewForm from './AddReviewForm'
 
 import history from './history';
 
@@ -42,6 +43,7 @@ export default class UserAccounts extends Component {
 							<Route path="/DevHome" exact component={DevHome} />
 							<Route path="/Informationpage/U/:id" exact component={InformationpageDisplay} />
 							<Route path="/Informationpage/L/:id" exact component={InformationpageDisplay} />
+							<Route exact path="/AddReview/:id" component={AddReviewForm} />
 		            	</Switch>
 		            </Fragment>
 		        </Router> 

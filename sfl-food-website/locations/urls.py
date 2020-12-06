@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .api import OrgLocationViewSet, OrgScheduleViewSet, OrgLocationLLViewSet, UserLocationViewSet, SubmitReviewAPI, GeocodeAPI, ReverseGeocodeAPI
+from .api import OrgLocationViewSet, OrgScheduleViewSet, OrgLocationLLViewSet, UserLocationViewSet, SubmitReviewAPI, GeocodeAPI, ReverseGeocodeAPI, ReviewViewSet
 from django.views.decorators.csrf import csrf_exempt
 
 router = routers.DefaultRouter()
@@ -8,6 +8,7 @@ router.register('api/locations', OrgLocationViewSet, 'locations')
 router.register('api/schedules', OrgScheduleViewSet, 'schedules')
 router.register('api/locationsLL', OrgLocationLLViewSet, 'locationsLL')
 router.register('api/userlocs', UserLocationViewSet, 'userlocs')
+router.register('api/reviews', ReviewViewSet, 'reviews')
 
 urlpatterns = router.urls
 

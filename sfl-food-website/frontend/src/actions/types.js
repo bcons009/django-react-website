@@ -10,6 +10,9 @@ export const EDIT_U_LOCATION  = "EDIT_U_LOCATION";
 
 export const GET_SEARCH_RESULTS = "GET_SEARCH_RESULTS";
 
+export const ADD_L_REVIEW  = "ADD_L_REVIEW";
+export const GET_L_REVIEW  = "GET_L_REVIEW";
+
 export const GET_ERRORS = 'GET_ERRORS';
 export const CREATE_MESSAGE = 'CREATE_MESSAGE';
 export const USER_LOADING = 'USER_LOADING';

@@ -82,12 +82,15 @@ class UserLocation(models.Model):
     def __str__(self):
         return self.name
 
+DEFAULT_USER_ID = 18
 class LocationReviews(models.Model):
     location = models.ForeignKey(
         OrgLocationLL,
         related_name='reviews',
         on_delete=models.CASCADE
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=DEFAULT_USER_ID)
+    title = models.CharField(max_length=100)
     rating = models.IntegerField()
     review = models.CharField(max_length=2000)
     last_updated_at = models.DateTimeField(auto_now=True)

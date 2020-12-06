@@ -3,6 +3,7 @@ import styles from "../mystyle.module.css";
 import MapDisplay from "./displays/MapDisplay";
 import Informationpage from './Informationpage.js';
 import { Link } from "react-router-dom";
+import LinkButton from "./misc/LinkButton";
 import { search } from '../actions/search';
 import axios from 'axios';
 import regeneratorRuntime from 'regenerator-runtime';
@@ -286,6 +287,15 @@ export class Search extends Component {
                         )}
                       </div>
                       <div className={styles.singleMealRight}>
+                        <LinkButton
+                          className="btn btn-primary btn-sm text-nowrap mx-1 rounded"
+                          to={{
+                            pathname: `/AddReview/${meal.id}`,
+                            id: meal.id,
+                          }}
+                        >
+                          Add Review
+                        </LinkButton>
                         {meal.email.includes("null") ? 
                           <p>(no email)</p> : <p>{meal.email}</p>
                         }
